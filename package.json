@@ -1,0 +1,31 @@
+{
+  "name": "viking-haul-discord-bot",
+  "version": "1.0.0",
+  "description": "Basic Discord bot for Viking Haul",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mistermycelium/Viking-Haul-Discord-Bot.git"
+  },
+  "keywords": [
+    "Discord",
+    "Bot"
+  ],
+  "author": "Cody Smith",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Mistermycelium/Viking-Haul-Discord-Bot/issues"
+  },
+  "homepage": "https://github.com/Mistermycelium/Viking-Haul-Discord-Bot#readme",
+  "dependencies": {
+    "discord.js": "^14.14.1"
+  },
+  "devDependencies": {
+    "@stylistic/eslint-plugin-js": "^1.4.1",
+    "eslint": "^8.54.0",
+    "eslint-config-standard": "^17.1.0"
+  }
+}
