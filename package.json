@@ -23,7 +23,9 @@
   "dependencies": {
     "basic-ftp": "^5.0.3",
     "discord.js": "^14.14.1",
-    "mysql": "^2.18.1"
+    "mysql": "^2.18.1",
+    "sequelize": "^6.35.1",
+    "sqlite3": "^5.1.6"
   },
   "devDependencies": {
     "@stylistic/eslint-plugin-js": "^1.4.1",
