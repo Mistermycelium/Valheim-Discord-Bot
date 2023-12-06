@@ -31,6 +31,34 @@ for (const folder of commandFolders) {
 // It makes some properties non-nullable.
 client.once(Events.ClientReady, readyClient => {
   console.log(`Ready! Logged in as ${readyClient.user.tag}`);
+  fs.writeFile('./whitelist/whitelist.txt', '', { flag: 'wx' }, (err) => {
+    if (err) {
+      console.log('whitelist found');
+    } else {
+      console.log('whitelist created');
+    }
+  });
+
+  const configstring = `{
+    "token": "token",
+    "clientId": "clientId",
+    "guildId": "guildId",
+    "ftplogins": [
+        {
+            "host": "host",
+            "port": "port",
+            "user": "user",
+            "password": "password"
+        }
+    ]
+}`;
+  fs.writeFile('./config.json', configstring, { flag: 'wx' }, (err) => {
+    if (err) {
+      console.log('whitelist found');
+    } else {
+      console.log('whitelist created');
+    }
+  });
 });
 
 client.on(Events.InteractionCreate, async interaction => {

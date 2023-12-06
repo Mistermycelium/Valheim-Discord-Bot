@@ -8,8 +8,11 @@ async function uploadWhitelist(whitelist) {
     client.ftp.verbose = true;
     try {
       await client.access(login);
-      // {host, user, password, secure}
-      await client.uploadFrom(whitelist, 'default/whitelist.txt.test');
+      if (login.folder) {
+        await client.uploadFrom(whitelist, `${login.folder}/permittedlist.txt`);
+      } else {
+        await client.uploadFrom(whitelist, 'default/permittedlist.txt');
+      }
     } catch (err) {
       console.log(err);
     }

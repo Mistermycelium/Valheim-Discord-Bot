@@ -26,9 +26,14 @@ const Whitelist = db.define('whitelist', {
     type: Sequelize.STRING,
     defaultValue: null,
   },
+//   isBanned: {
+//     type: Sequelize.BOOLEAN,
+//     defaultValue: false,
+//     allowNull: false,
+//   },
 });
 
-db.sync()
+db.sync({ alter: true })
   .then(() => {
     console.log('Database & tables created!');
   })
@@ -38,26 +43,12 @@ db.sync()
 
 module.exports = {
   getWhitelistData: async function() {
-    await db.sync()
-      .then(() => {
-        console.log('Database & tables created!');
-      })
-      .catch((error) => {
-        console.error('This error occured', error);
-      });
     const result = await Whitelist.findAll();
     return result;
   },
 
   addUser: async function(user) {
     const result = await Whitelist.create(user);
-    await db.sync()
-      .then(() => {
-        console.log('Database & tables created!');
-      })
-      .catch((error) => {
-        console.error('This error occured', error);
-      });
     return result;
   },
 

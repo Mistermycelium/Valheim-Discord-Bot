@@ -27,9 +27,13 @@ module.exports = {
       const xboxID = interaction.options.getString('xboxid');
       const xboxRegExp = /^Xbox_\d{16}$/;
       if (xboxID && xboxRegExp.test(xboxID)) {
-        await whitelist.addUser({ DiscordID: interaction.user.id, Username: interaction.user.username, XboxID: xboxID });
-        // call function to manage record, check for existing record. if (record.exists)
-        await interaction.reply({ content: `Thank you for registering with the XboxID ${xboxID}.`, ephemeral: true });
+        if (await whitelist.findUser(interaction.user.id)) {
+          await interaction.reply({ content: `It looks like you're already registered ${interaction.user.username}`, ephemeral: true });
+        } else {
+          await whitelist.addUser({ DiscordID: interaction.user.id, Username: interaction.user.username, XboxID: xboxID });
+          // call function to manage record, check for existing record. if (record.exists)
+          await interaction.reply({ content: `Thank you for registering with the XboxID ${xboxID}.`, ephemeral: true });
+        }
       } else {
         // xboxID is missing or invalid. For now, we treat both the same.
         await interaction.reply({ content: `\`\`${xboxID}\`\` is not a valid Xbox ID, Xbox IDs should look like \`\`Xbox_25xxxxxxxxxxxxxx\`\``, ephemeral: true });
