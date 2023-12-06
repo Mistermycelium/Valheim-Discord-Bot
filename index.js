@@ -54,9 +54,9 @@ client.once(Events.ClientReady, readyClient => {
 }`;
   fs.writeFile('./config.json', configstring, { flag: 'wx' }, (err) => {
     if (err) {
-      console.log('whitelist found');
+      console.log('config found');
     } else {
-      console.log('whitelist created');
+      console.log('config created');
     }
   });
 });
