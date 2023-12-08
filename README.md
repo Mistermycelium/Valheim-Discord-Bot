@@ -1,4 +1,4 @@
-# Viking-Haul-Discord-Bot
+# Valheim Dedicated Server Discord Bot
 A simple discord bot to help with managing a Valheim discord community and its servers. 
 
 Start.exe will automatically setup the environment, installing dependencies, and start the bot running.
