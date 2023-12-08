@@ -26,11 +26,6 @@ const Whitelist = db.define('whitelist', {
     type: Sequelize.STRING,
     defaultValue: null,
   },
-//   isBanned: {
-//     type: Sequelize.BOOLEAN,
-//     defaultValue: false,
-//     allowNull: false,
-//   },
 });
 
 db.sync({ alter: true })
@@ -41,9 +36,26 @@ db.sync({ alter: true })
     console.error('This error occured', error);
   });
 
+
+// const { ModelName } = require('./models');
+// // replace ModelName with your model's name
+// ModelName.findAll({
+//   where: {
+//     column1: 'value1',
+//     // replace column1 and value1 with your column's name and the value you want to filter by
+//     column2: 'value2',
+//     // add as many properties as you need
+//   },
+// }).then(results => {
+//   // results will be an array of ModelName instances, each instance represents a row in the table
+//   console.log(results);
+// }).catch(error => { console.error(error); });
+
 module.exports = {
   getWhitelistData: async function() {
-    const result = await Whitelist.findAll();
+    let result = await Whitelist.findAll();
+    result = result.map(item => item.dataValues);
+    console.log(result);
     return result;
   },
 
@@ -51,6 +63,22 @@ module.exports = {
     const result = await Whitelist.create(user);
     return result;
   },
-
+  removeUser: async function(user) {
+    const result = await Whitelist.destroy({
+      where: {
+        DiscordID: user.DiscordID,
+      },
+    });
+    return result;
+  },
+  updateUser: async function(user) {
+    const result = await Whitelist.update(user, {
+      where: {
+        DiscordID: user.DiscordID,
+      },
+    });
+    console.log(result);
+    return result;
+  },
 };
 

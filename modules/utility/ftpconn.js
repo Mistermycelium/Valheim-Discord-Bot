@@ -9,9 +9,9 @@ async function uploadWhitelist(whitelist) {
     try {
       await client.access(login);
       if (login.folder) {
-        await client.uploadFrom(whitelist, `${login.folder}/permittedlist.txt`);
+        await client.uploadFrom(whitelist, `${login.folder}/whitelist.txt`);
       } else {
-        await client.uploadFrom(whitelist, 'default/permittedlist.txt');
+        await client.uploadFrom(whitelist, 'default/whitelist.txt');
       }
     } catch (err) {
       console.log(err);
