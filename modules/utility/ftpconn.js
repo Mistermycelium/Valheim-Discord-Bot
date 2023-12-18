@@ -3,6 +3,9 @@ const ftp = require('basic-ftp');
 
 
 async function uploadWhitelist(whitelist) {
+  if (!Array.isArray(ftplogins)) {
+    return;
+  }
   ftplogins.forEach(async (login) => {
     const client = new ftp.Client();
     client.ftp.verbose = true;

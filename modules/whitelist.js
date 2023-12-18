@@ -52,14 +52,14 @@ module.exports = {
       const usr = whitelistData.find(user => user.DiscordID === discID);
       const whitelist = buildWhitelist(whitelistData);
       writeWhitelist(whitelist);
-      // uploadWhitelist();
+      uploadWhitelist();
       return usr;
     },
     addUser: async function(user) {
       whitelistData.push(user);
       const whitelist = buildWhitelist(whitelistData);
       writeWhitelist(whitelist);
-      // uploadWhitelist();
+      uploadWhitelist();
       db.addUser(user);
       console.log(user);
     },
@@ -67,7 +67,7 @@ module.exports = {
       whitelistData = whitelistData.filter(item => item.DiscordID !== user.DiscordID);
       const whitelist = buildWhitelist(whitelistData);
       writeWhitelist(whitelist);
-      // uploadWhitelist();
+      uploadWhitelist();
       db.removeUser(user);
     },
     updateUser: async function(user) {
@@ -76,7 +76,7 @@ module.exports = {
       console.log(user);
       const whitelist = buildWhitelist(whitelistData);
       writeWhitelist(whitelist);
-      // uploadWhitelist();
+      uploadWhitelist();
       db.updateUser(user);
     },
   },

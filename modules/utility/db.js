@@ -4,7 +4,7 @@ const db = new Sequelize('vhbot', 'VHBot', 'Taco', {
   host: 'localhost',
   dialect: 'sqlite',
   logging: false,
-  // SQLite only
+  // SQLite onlyw
   storage: './database.sqlite',
 });
 
@@ -33,7 +33,7 @@ db.sync({ alter: true })
     console.log('Database & tables created!');
   })
   .catch((error) => {
-    console.error('This error occured', error);
+    console.error('error: ', error);
   });
 
 
@@ -55,7 +55,7 @@ module.exports = {
   getWhitelistData: async function() {
     let result = await Whitelist.findAll();
     result = result.map(item => item.dataValues);
-    console.log(result);
+    // console.log(result);
     return result;
   },
 
@@ -77,7 +77,7 @@ module.exports = {
         DiscordID: user.DiscordID,
       },
     });
-    console.log(result);
+    // console.log(result);
     return result;
   },
 };
