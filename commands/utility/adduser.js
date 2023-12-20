@@ -45,8 +45,8 @@ module.exports = {
         }
         usr.SteamID = steam64ID;
       }
-      await whitelist.addUser(usr);
-      await interaction.reply({ content: `${mentionable} added. ${JSON.stringify(usr)}`, ephemeral: true });
+      //   await whitelist.addUser(usr);
+      await interaction.reply({ content: `${mentionable} added. \`\`\`js\n${JSON.stringify(usr, null, 2)}\`\`\``, ephemeral: true });
     } else {
       await interaction.reply({ content: `Failed: ${mentionable}`, ephemeral: true });
     }

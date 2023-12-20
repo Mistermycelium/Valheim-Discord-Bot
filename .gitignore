@@ -3,6 +3,7 @@ deploy-commands.json
 node_modules
 .vscode/settings.json
 database.sqlite
+devdb.sqlite
 whitelist/import.js
 whitelist/import.json
 whitelist/import.txt

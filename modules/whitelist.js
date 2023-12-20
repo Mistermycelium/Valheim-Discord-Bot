@@ -1,9 +1,10 @@
-const db = require('./utility/db');
+const Database = require('./utility/Database');
 const fs = require('node:fs');
 const ftpConn = require('./utility/ftpconn');
 let whitelistData;
 async function loadData() {
-  whitelistData = await db.getWhitelistData();
+  await Database.db.sync();
+  whitelistData = await Database.getWhitelistData();
   console.log('loaded whitelist data');
 }
 
@@ -60,7 +61,7 @@ module.exports = {
       const whitelist = buildWhitelist(whitelistData);
       writeWhitelist(whitelist);
       uploadWhitelist();
-      db.addUser(user);
+      Database.addUser(user);
       console.log(user);
     },
     removeUser: async function(user) {
@@ -68,7 +69,7 @@ module.exports = {
       const whitelist = buildWhitelist(whitelistData);
       writeWhitelist(whitelist);
       uploadWhitelist();
-      db.removeUser(user);
+      Database.removeUser(user);
     },
     updateUser: async function(user) {
       whitelistData = whitelistData.map(item => item.DiscordID === user.DiscordID ? { ...item, ...user } : item);
@@ -77,7 +78,7 @@ module.exports = {
       const whitelist = buildWhitelist(whitelistData);
       writeWhitelist(whitelist);
       uploadWhitelist();
-      db.updateUser(user);
+      Database.updateUser(user);
     },
   },
 };
