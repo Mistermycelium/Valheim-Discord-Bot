@@ -39,10 +39,10 @@ module.exports = {
         Validator.validateId(steam64ID, /^765\d{14}$/, `${steam64ID} is not a valid Steam ID`);
         usr.SteamID = steam64ID;
       }
-      //   await whitelist.addUser(usr);
-      await interaction.reply({ content: `${mentionable} added. \`\`\`js\n${JSON.stringify(usr, null, 2)}\`\`\``, ephemeral: true });
+      await whitelist.addUser(usr);
+      await interaction.reply({ content: `${mentionable} added.`, ephemeral: true });
     } else {
-      await interaction.reply({ content: `Failed: ${mentionable}`, ephemeral: true });
+      await interaction.reply({ content: `Failed to add ${mentionable}`, ephemeral: true });
     }
   },
 };
