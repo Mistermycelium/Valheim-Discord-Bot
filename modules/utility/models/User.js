@@ -23,7 +23,7 @@ class User extends Model {
           allowNull: true,
         },
         SteamID: {
-          type: DataTypes.BIGINT,
+          type: DataTypes.STRING,
           allowNull: true,
         },
         XboxID: {
@@ -31,7 +31,7 @@ class User extends Model {
           allowNull: true,
         },
         DiscordID: {
-          type: DataTypes.BIGINT,
+          type: DataTypes.STRING,
           unique: true,
           allowNull: false,
         },

@@ -1,4 +1,5 @@
 const { User } = require('../Database');
+const { UniqueConstraintError, ForeignKeyConstraintError } = require('sequelize');
 
 
 class UserRepository {
@@ -9,26 +10,50 @@ class UserRepository {
   }
 
   async addUser(user) {
-    const result = await User.create(user);
-    return result;
+    const existingUser = await User.findOne({
+      where: {
+        DiscordID: user.DiscordID,
+      },
+    });
+    if (existingUser) {
+      // Update the user information
+      return this.updateUser(user);
+    } else {
+      // Add the new user
+      return User.create(user);
+    }
   }
 
   async removeUser(user) {
-    const result = await User.destroy({
-      where: {
-        DiscordID: user.DiscordID,
-      },
-    });
-    return result;
+    try {
+      const result = await User.destroy({
+        where: {
+          DiscordID: user.DiscordID,
+        },
+      });
+      return result;
+    } catch (error) {
+      if (error instanceof ForeignKeyConstraintError) {
+        throw new Error(`${JSON.stringify(user, null, 2)} is referenced by other entities.`);
+      }
+      throw error;
+    }
   }
 
   async updateUser(user) {
-    const result = await User.update(user, {
-      where: {
-        DiscordID: user.DiscordID,
-      },
-    });
-    return result;
+    try {
+      const result = await User.update(user, {
+        where: {
+          DiscordID: user.DiscordID,
+        },
+      });
+      return result;
+    } catch (error) {
+      if (error instanceof UniqueConstraintError) {
+        throw new Error(`${JSON.stringify(user, null, 2)} already exists`);
+      }
+      throw error;
+    }
   }
 }
 

@@ -59,11 +59,15 @@ module.exports = {
       return usr;
     },
     addUser: async function(user) {
+      try {
+        userRepository.addUser(user);
+      } catch (error) {
+        console.log(error.message);
+      }
       whitelistData.push(user);
       const whitelist = buildWhitelist(whitelistData);
       writeWhitelist(whitelist);
       uploadWhitelist();
-      userRepository.addUser(user);
       console.log(user);
     },
     removeUser: async function(user) {
@@ -74,13 +78,15 @@ module.exports = {
       userRepository.removeUser(user);
     },
     updateUser: async function(user) {
+      await userRepository.updateUser(user);
       whitelistData = whitelistData.map(item => item.DiscordID === user.DiscordID ? { ...item, ...user } : item);
+      // whitelistData.push(user);
       console.log(whitelistData);
-      console.log(user);
+      // console.log(user);
       const whitelist = buildWhitelist(whitelistData);
       writeWhitelist(whitelist);
       uploadWhitelist();
-      userRepository.updateUser(user);
+      // console.log(user);
     },
   },
 };

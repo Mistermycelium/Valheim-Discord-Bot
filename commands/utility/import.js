@@ -7,9 +7,13 @@ module.exports = {
     .setName('import')
     .setDescription('Sign up to join one of our servers!'),
   async execute(interaction) {
-    imports.forEach(user => {
-      whitelist.addUser(user);
-    });
+    await Promise.all(imports.map(async (user) => {
+      try {
+        await whitelist.addUser(user);
+      } catch (error) {
+        console.log(`Failed to add user ${user.Username}: ${error.message}`);
+      }
+    }));
     console.log('Imported');
     await interaction.reply({ content: 'Ooga Booga', ephemeral: true });
   },

@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 const { whitelist } = require('../../modules/whitelist');
+const Validator = require('../../modules/utility/Validator');
 
 module.exports = {
   data:
@@ -29,20 +30,13 @@ module.exports = {
     if (await whitelist.findUser(usr.DiscordID)) {
       if (interaction.options.getString('xbox')) {
         const xboxID = interaction.options.getString('xbox');
-        const xboxRegExp = /^Xbox_\d{16}$/;
-        if (!xboxRegExp.test(xboxID)) {
-          await interaction.reply({ content: `${xboxID} is not a valid Xbox ID`, ephemeral: true });
-          return;
-        }
+        Validator.validateId(xboxID, /^Xbox_\d{16}$/, `${xboxID} is not a valid Xbox ID`);
         usr.XboxID = xboxID;
       }
+
       if (interaction.options.getString('steam')) {
         const steam64ID = interaction.options.getString('steam');
-        const steamRegExp = /^765\d{14}$/;
-        if (!steamRegExp.test(steam64ID)) {
-          await interaction.reply({ content: `${steam64ID} is not a valid Steam ID`, ephemeral: true });
-          return;
-        }
+        Validator.validateId(steam64ID, /^765\d{14}$/, `${steam64ID} is not a valid Steam ID`);
         usr.SteamID = steam64ID;
       }
       //   await whitelist.addUser(usr);
