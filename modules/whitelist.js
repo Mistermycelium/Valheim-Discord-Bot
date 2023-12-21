@@ -1,14 +1,12 @@
-const Database = require('./utility/Database');
+const UserRepository = require('./utility/repositories/UserRepository');
+
+const userRepository = new UserRepository();
+
+
 const fs = require('node:fs');
 const ftpConn = require('./utility/ftpconn');
 let whitelistData;
-async function loadData() {
-  await Database.db.sync();
-  whitelistData = await Database.getWhitelistData();
-  console.log('loaded whitelist data');
-}
 
-loadData();
 
 function buildWhitelist(Data) {
   let content = '';
@@ -45,6 +43,10 @@ function uploadWhitelist() {
 
 module.exports = {
   whitelist: {
+    loadData: async function() {
+      whitelistData = await userRepository.getWhitelistData();
+      console.log('loaded whitelist data');
+    },
     uploadWhitelist: uploadWhitelist(),
     get whitelistData() {
       return whitelistData;
@@ -61,7 +63,7 @@ module.exports = {
       const whitelist = buildWhitelist(whitelistData);
       writeWhitelist(whitelist);
       uploadWhitelist();
-      Database.addUser(user);
+      userRepository.addUser(user);
       console.log(user);
     },
     removeUser: async function(user) {
@@ -69,7 +71,7 @@ module.exports = {
       const whitelist = buildWhitelist(whitelistData);
       writeWhitelist(whitelist);
       uploadWhitelist();
-      Database.removeUser(user);
+      userRepository.removeUser(user);
     },
     updateUser: async function(user) {
       whitelistData = whitelistData.map(item => item.DiscordID === user.DiscordID ? { ...item, ...user } : item);
@@ -78,7 +80,7 @@ module.exports = {
       const whitelist = buildWhitelist(whitelistData);
       writeWhitelist(whitelist);
       uploadWhitelist();
-      Database.updateUser(user);
+      userRepository.updateUser(user);
     },
   },
 };

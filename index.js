@@ -1,5 +1,7 @@
 // Require necessary classes
 const fs = require('node:fs');
+const { db } = require('./modules/utility/Database');
+const { whitelist } = require('./modules/whitelist.js');
 const path = require('node:path');
 const { Client, Collection, Events, GatewayIntentBits } = require('discord.js');
 const { token } = require('./config.json');
@@ -29,8 +31,15 @@ for (const folder of commandFolders) {
 // When the client is ready, run this code (only once).
 // The distinction between `client: Client<boolean>` and `readyClient: Client<true>` is important for TypeScript developers.
 // It makes some properties non-nullable.
-client.once(Events.ClientReady, readyClient => {
-  console.log(`Ready! Logged in as ${readyClient.user.tag}`);
+client.once(Events.ClientReady, async readyClient => {
+  await db.sync({ alter: true })
+    .then(() => {
+      console.log('Database & tables created!');
+    })
+    .catch((error) => {
+      console.error('error: ', error);
+    });
+  await whitelist.loadData();
   fs.writeFile('./whitelist/whitelist.txt', '', { flag: 'wx' }, (err) => {
     if (err) {
       console.log('whitelist found');
@@ -38,7 +47,6 @@ client.once(Events.ClientReady, readyClient => {
       console.log('whitelist created');
     }
   });
-
   const configstring = `{
     "token": "token",
     "clientId": "clientId",
@@ -59,6 +67,7 @@ client.once(Events.ClientReady, readyClient => {
       console.log('config created');
     }
   });
+  console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 });
 
 client.on(Events.InteractionCreate, async interaction => {
