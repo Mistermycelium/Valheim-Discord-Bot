@@ -19,44 +19,7 @@ const db = new sequelize_1.Sequelize('vhbot', 'VHBot', 'Taco', {
 });
 exports.db = db;
 User_1.default.initModel(db);
-Server_1.default.init(db);
-UserServerStatus_1.default.init(db);
+Server_1.default.initModel(db);
+UserServerStatus_1.default.initModel(db);
 User_1.default.belongsToMany(Server_1.default, { through: UserServerStatus_1.default });
 Server_1.default.belongsToMany(User_1.default, { through: UserServerStatus_1.default });
-// {
-// db,
-// getWhitelistData: async function() {
-//   let result = await User.findAll();
-//   result = result.map(item => item.dataValues);
-//   return result;
-// },
-// addUser: async function(user) {
-//   const result = await User.create(user);
-//   return result;
-// },
-// removeUser: async function(user) {
-//   const result = await User.destroy({
-//     where: {
-//       DiscordID: user.DiscordID,
-//     },
-//   });
-//   return result;
-// },
-// updateUser: async function(user) {
-//   const result = await User.update(user, {
-//     where: {
-//       DiscordID: user.DiscordID,
-//     },
-//   });
-//   return result;
-// },
-// syncDatabase: function() {
-//   db.sync({ alter: true })
-//     .then(() => {
-//       console.log('Database & tables created!');
-//     })
-//     .catch((error) => {
-//       console.error('error: ', error);
-//     });
-// },
-// };

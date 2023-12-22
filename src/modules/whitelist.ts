@@ -1,4 +1,4 @@
-import UserRepository from './utility/repositories/UserRepository';
+import {UserRepository, UserInterface} from './utility/repositories/UserRepository';
 
 const userRepository = new UserRepository();
 
@@ -77,14 +77,14 @@ export const whitelist = {
       // uploadWhitelist();
       console.log(user);
     },
-    removeUser: async function(user: { DiscordID: any; }) {
+    removeUser: async function(user: UserInterface) {
       whitelistData = whitelistData.filter((item: { DiscordID: any; }) => item.DiscordID !== user.DiscordID);
       const whitelist = buildWhitelist(whitelistData);
       writeWhitelist(whitelist);
       // uploadWhitelist();
       userRepository.removeUser(user);
     },
-    updateUser: async function(user: { DiscordID: any; }) {
+    updateUser: async function(user: UserInterface) {
       await userRepository.updateUser(user);
       whitelistData = whitelistData.map((item: { DiscordID: any; }) => item.DiscordID === user.DiscordID ? { ...item, ...user } : item);
       // whitelistData.push(user);

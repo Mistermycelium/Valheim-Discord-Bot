@@ -4,8 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.whitelist = void 0;
-const UserRepository_1 = __importDefault(require("./utility/repositories/UserRepository"));
-const userRepository = new UserRepository_1.default();
+const UserRepository_1 = require("./utility/repositories/UserRepository");
+const userRepository = new UserRepository_1.UserRepository();
 const node_fs_1 = __importDefault(require("node:fs"));
 // import ftpConn from './utility/ftpconn';
 let whitelistData;

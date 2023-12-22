@@ -23,7 +23,7 @@ module.exports = {
         option.setName('xbox')
           .setRequired(false)
           .setDescription('The users Xbox ID')),
-  async execute(interaction) {
+  async execute(interaction: { options: { getMentionable: (arg0: string) => any; getString: (arg0: string) => any; }; reply: (arg0: { content: string; ephemeral: boolean; }) => any; }) {
     try {
       const mentionable = interaction.options.getMentionable('user');
       let usr: { [key: string]: any } = {
@@ -50,7 +50,8 @@ module.exports = {
       await whitelist.updateUser(usr);
       await interaction.reply({ content: `${mentionable} updated`, ephemeral: true });
     } catch (error) {
+      if (error instanceof Error){
       await interaction.reply({ content: `Failed: ${error.message}`, ephemeral: true });
-    }
+    }}
   },
 };

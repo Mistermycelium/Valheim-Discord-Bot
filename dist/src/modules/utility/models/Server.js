@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const sequelize_1 = require("sequelize");
 class Server extends sequelize_1.Model {
-    static init(sequelize) {
+    static initModel(sequelize) {
         return super
             .init({
             id: {
@@ -33,4 +33,4 @@ class Server extends sequelize_1.Model {
         });
     }
 }
-module.exports = Server;
+exports.default = Server;

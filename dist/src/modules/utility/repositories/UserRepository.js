@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.UserRepository = void 0;
 const Database_1 = require("../Database");
 const sequelize_1 = require("sequelize");
 class UserRepository {
@@ -56,4 +57,4 @@ class UserRepository {
         }
     }
 }
-exports.default = UserRepository;
+exports.UserRepository = UserRepository;
