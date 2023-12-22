@@ -32,9 +32,11 @@ const Database_1 = require("./modules/utility/Database");
 const whitelist_1 = require("./modules/whitelist");
 const path_1 = __importDefault(require("path"));
 const discord_js_1 = require("discord.js");
-const config_json_1 = require("./config.json");
+const config_json_1 = require("../config/config.json");
+class BotClient extends discord_js_1.Client {
+}
 // initialize client
-const client = new discord_js_1.Client({ intents: [discord_js_1.GatewayIntentBits.Guilds] });
+const client = new BotClient({ intents: [discord_js_1.GatewayIntentBits.Guilds] });
 client.commands = new discord_js_1.Collection();
 const foldersPath = path_1.default.join(__dirname, 'commands');
 const commandFolders = fs.readdirSync(foldersPath);

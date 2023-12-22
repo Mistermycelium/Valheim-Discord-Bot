@@ -1,8 +1,9 @@
+import { Readable } from 'stream';
 import { ftplogins } from '../../config.json';
 import ftp from 'basic-ftp';
 
 
-async function uploadWhitelist(whitelist) {
+async function uploadWhitelist(whitelist: string | Readable) {
   if (!Array.isArray(ftplogins)) {
     return;
   }
@@ -24,6 +25,6 @@ async function uploadWhitelist(whitelist) {
 }
 
 
-module.exports = {
+export {
   uploadWhitelist,
 };

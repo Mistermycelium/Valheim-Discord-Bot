@@ -1,7 +1,17 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes, Sequelize } from 'sequelize';
 
-class User extends Model {
-  static init(sequelize) {
+interface UserInstance extends Model {
+  id: number;
+  Username: string;
+  email: string;
+  playerName: string;
+  SteamID: number;
+  XboxID: string;
+  DiscordID: number;
+}
+
+class User extends Model<UserInstance> {
+  static initModel(sequelize: Sequelize) {
     return super.init(
       {
         id: {
@@ -23,7 +33,7 @@ class User extends Model {
           allowNull: true,
         },
         SteamID: {
-          type: DataTypes.STRING,
+          type: DataTypes.BIGINT,
           allowNull: true,
         },
         XboxID: {
@@ -31,7 +41,7 @@ class User extends Model {
           allowNull: true,
         },
         DiscordID: {
-          type: DataTypes.STRING,
+          type: DataTypes.BIGINT,
           unique: true,
           allowNull: false,
         },
@@ -51,4 +61,4 @@ class User extends Model {
   }
 }
 
-module.exports = User;
+export default User;

@@ -20,7 +20,7 @@ module.exports = {
         option.setName('xbox')
           .setRequired(false)
           .setDescription('The users Xbox ID')),
-  async execute(interaction) {
+  async execute(interaction: { options: { getMentionable: (arg0: string) => any; getString: (arg0: string) => any; }; reply: (arg0: { content: string; ephemeral: boolean; }) => any; }) {
     const mentionable = interaction.options.getMentionable('user');
     let usr: { [key: string]: any } = {
       DiscordID: mentionable.user.id,

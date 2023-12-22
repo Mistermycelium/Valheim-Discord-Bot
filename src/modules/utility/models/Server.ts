@@ -1,8 +1,15 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes, Sequelize } from 'sequelize';
 
+interface ServerInstance extends Model {
+  id: number;
+  name: string;
+  guildId: number;
+  ip: string;
+  port: number;
+}
 
-class Server extends Model {
-  static init(sequelize) {
+class Server extends Model<ServerInstance> {
+  static initModel(sequelize: Sequelize) {
     return super
       .init(
         {
@@ -37,4 +44,4 @@ class Server extends Model {
   }
 }
 
-module.exports = Server;
+export default Server;

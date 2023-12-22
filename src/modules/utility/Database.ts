@@ -10,52 +10,11 @@ const db = new Sequelize('vhbot', 'VHBot', 'Taco', {
   storage: './devsequelize.sqlite',
 });
 
-User.init(db);
-Server.init(db);
-UserServerStatus.init(db);
+User.initModel(db);
+Server.initModel(db);
+UserServerStatus.initModel(db);
 
 User.belongsToMany(Server, { through: UserServerStatus });
 Server.belongsToMany(User, { through: UserServerStatus });
 
-module.exports = { db, User, Server, UserServerStatus };
-// {
-// db,
-// getWhitelistData: async function() {
-//   let result = await User.findAll();
-//   result = result.map(item => item.dataValues);
-//   return result;
-// },
-
-// addUser: async function(user) {
-//   const result = await User.create(user);
-//   return result;
-// },
-
-// removeUser: async function(user) {
-//   const result = await User.destroy({
-//     where: {
-//       DiscordID: user.DiscordID,
-//     },
-//   });
-//   return result;
-// },
-
-// updateUser: async function(user) {
-//   const result = await User.update(user, {
-//     where: {
-//       DiscordID: user.DiscordID,
-//     },
-//   });
-//   return result;
-// },
-
-// syncDatabase: function() {
-//   db.sync({ alter: true })
-//     .then(() => {
-//       console.log('Database & tables created!');
-//     })
-//     .catch((error) => {
-//       console.error('error: ', error);
-//     });
-// },
-// };
+export { db, User, Server, UserServerStatus };

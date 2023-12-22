@@ -1,6 +1,15 @@
 import { User } from '../Database';
 import { UniqueConstraintError, ForeignKeyConstraintError } from 'sequelize';
 
+interface UserInterface extends User {
+  id: number;
+  Username: string;
+  email: string;
+  playerName: string;
+  SteamID: number;
+  XboxID: string;
+  DiscordID: number;
+}
 
 class UserRepository {
   async getWhitelistData() {
@@ -9,7 +18,7 @@ class UserRepository {
     return result;
   }
 
-  async addUser(user) {
+  async addUser(user: UserInterface) {
     const existingUser = await User.findOne({
       where: {
         DiscordID: user.DiscordID,
@@ -24,7 +33,7 @@ class UserRepository {
     }
   }
 
-  async removeUser(user) {
+  async removeUser(user: UserInterface) {
     try {
       const result = await User.destroy({
         where: {
@@ -40,7 +49,7 @@ class UserRepository {
     }
   }
 
-  async updateUser(user) {
+  async updateUser(user: UserInterface) {
     try {
       const result = await User.update(user, {
         where: {
@@ -57,4 +66,4 @@ class UserRepository {
   }
 }
 
-module.exports = UserRepository;
+export default UserRepository;

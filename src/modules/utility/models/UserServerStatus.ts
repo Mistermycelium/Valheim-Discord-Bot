@@ -1,7 +1,12 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes, Sequelize } from 'sequelize';
 
-class UserServerStatus extends Model {
-  static init(sequelize) {
+interface UserServerStatusInterface extends Model {
+  id: number;
+  statusType: Enumerator;
+}
+
+class UserServerStatus extends Model<UserServerStatusInterface> {
+  static initModel(sequelize: Sequelize) {
     return super.init(
       {
         id: {
@@ -23,4 +28,4 @@ class UserServerStatus extends Model {
   }
 }
 
-module.exports = UserServerStatus;
+export default UserServerStatus;

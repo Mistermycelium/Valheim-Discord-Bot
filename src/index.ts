@@ -4,10 +4,14 @@ import { db } from './modules/utility/Database';
 import { whitelist } from './modules/whitelist';
 import path from 'path';
 import { Client, Collection, Events, GatewayIntentBits } from 'discord.js';
-import { token } from './config.json';
+import { token } from '../config/config.json';
+
+class BotClient extends Client {
+  commands!: Collection<string, any>;
+}
 
 // initialize client
-const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+const client = new BotClient({ intents: [GatewayIntentBits.Guilds] });
 
 client.commands = new Collection();
 const foldersPath = path.join(__dirname, 'commands');
@@ -72,7 +76,7 @@ client.once(Events.ClientReady, async readyClient => {
 
 client.on(Events.InteractionCreate, async interaction => {
   if (!interaction.isChatInputCommand()) return;
-  const command = interaction.client.commands.get(interaction.commandName);
+  const command = (interaction.client as BotClient).commands.get(interaction.commandName);
 
   if (!command) {
     console.error(`No command matching ${interaction.commandName} was found.`);

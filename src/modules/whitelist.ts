@@ -4,14 +4,14 @@ const userRepository = new UserRepository();
 
 
 import fs from 'node:fs';
-import ftpConn from './utility/ftpconn';
-let whitelistData;
+// import ftpConn from './utility/ftpconn';
+let whitelistData: any[];
 
 
-function buildWhitelist(Data) {
+function buildWhitelist(Data: any[]) {
   let content = '';
   // Build the whitelist content
-  Data.forEach(user => {
+  Data.forEach((user: { SteamID: any; DiscordID: any; Username: any; XboxID: any; }) => {
     let userstr = '';
     if (user.SteamID) {
       userstr = `// Discord ID: ${user.DiscordID} Username: ${user.Username}\n${user.SteamID}\n\n`;
@@ -26,7 +26,7 @@ function buildWhitelist(Data) {
   return content;
 }
 
-function writeWhitelist(content) {
+function writeWhitelist(content: string | NodeJS.ArrayBufferView) {
   fs.writeFile('./whitelist/whitelist.txt', content, err => {
     if (err) {
       console.error(err);
@@ -35,10 +35,16 @@ function writeWhitelist(content) {
   });
 }
 
-function uploadWhitelist() {
-  ftpConn.uploadWhitelist('./whitelist/whitelist.txt');
+// function uploadWhitelist() {
+//   ftpConn.uploadWhitelist('./whitelist/whitelist.txt');
+// }
+function maptoStrings(arr: any[]) {
+  arr = arr.map((item: { [key: string]: any }) => ({
+    ...item,
+    DiscordID: String(item.DiscordID),
+    SteamID: String(item.SteamID)
+  }));
 }
-
 // writeWhitelist(buildWhitelist(whitelistData));
 
 export const whitelist = {
@@ -46,45 +52,47 @@ export const whitelist = {
       whitelistData = await userRepository.getWhitelistData();
       console.log('loaded whitelist data');
     },
-    uploadWhitelist: uploadWhitelist(),
-    get whitelistData() {
-      return whitelistData;
-    },
-    findUser: async function(discID) {
-      const usr = whitelistData.find(user => user.DiscordID === discID);
+    // uploadWhitelist: uploadWhitelist(),
+    // get whitelistData() {
+    //   return whitelistData;
+    // },
+    findUser: async function(discID: any) {
+      const usr = whitelistData.find((user: { DiscordID: any; }) => user.DiscordID === discID);
       const whitelist = buildWhitelist(whitelistData);
       writeWhitelist(whitelist);
-      uploadWhitelist();
+      // uploadWhitelist();
       return usr;
     },
-    addUser: async function(user) {
+    addUser: async function(user: any) {
       try {
         userRepository.addUser(user);
       } catch (error) {
-        console.log(error.message);
+        if (error instanceof Error) {
+          console.log(error.message);
+        }
       }
       whitelistData.push(user);
       const whitelist = buildWhitelist(whitelistData);
       writeWhitelist(whitelist);
-      uploadWhitelist();
+      // uploadWhitelist();
       console.log(user);
     },
-    removeUser: async function(user) {
-      whitelistData = whitelistData.filter(item => item.DiscordID !== user.DiscordID);
+    removeUser: async function(user: { DiscordID: any; }) {
+      whitelistData = whitelistData.filter((item: { DiscordID: any; }) => item.DiscordID !== user.DiscordID);
       const whitelist = buildWhitelist(whitelistData);
       writeWhitelist(whitelist);
-      uploadWhitelist();
+      // uploadWhitelist();
       userRepository.removeUser(user);
     },
-    updateUser: async function(user) {
+    updateUser: async function(user: { DiscordID: any; }) {
       await userRepository.updateUser(user);
-      whitelistData = whitelistData.map(item => item.DiscordID === user.DiscordID ? { ...item, ...user } : item);
+      whitelistData = whitelistData.map((item: { DiscordID: any; }) => item.DiscordID === user.DiscordID ? { ...item, ...user } : item);
       // whitelistData.push(user);
       console.log(whitelistData);
       // console.log(user);
       const whitelist = buildWhitelist(whitelistData);
       writeWhitelist(whitelist);
-      uploadWhitelist();
+      // uploadWhitelist();
       // console.log(user);
     },
   };
