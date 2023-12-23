@@ -64,7 +64,7 @@ client.once(Events.ClientReady, async readyClient => {
         }
     ]
 }`;
-  fs.writeFile('./config.json', configstring, { flag: 'wx' }, (err) => {
+  fs.writeFile('./config/config.json', configstring, { flag: 'wx' }, (err) => {
     if (err) {
       console.log('config found');
     } else {
