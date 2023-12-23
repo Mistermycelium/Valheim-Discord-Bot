@@ -22,6 +22,15 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -32,9 +41,11 @@ const Database_1 = require("./modules/utility/Database");
 const whitelist_1 = require("./modules/whitelist");
 const path_1 = __importDefault(require("path"));
 const discord_js_1 = require("discord.js");
-const config_json_1 = require("./config.json");
+const config_json_1 = require("../config/config.json");
+class BotClient extends discord_js_1.Client {
+}
 // initialize client
-const client = new discord_js_1.Client({ intents: [discord_js_1.GatewayIntentBits.Guilds] });
+const client = new BotClient({ intents: [discord_js_1.GatewayIntentBits.Guilds] });
 client.commands = new discord_js_1.Collection();
 const foldersPath = path_1.default.join(__dirname, 'commands');
 const commandFolders = fs.readdirSync(foldersPath);
@@ -56,16 +67,16 @@ for (const folder of commandFolders) {
 // When the client is ready, run this code (only once).
 // The distinction between `client: Client<boolean>` and `readyClient: Client<true>` is important for TypeScript developers.
 // It makes some properties non-nullable.
-client.once(discord_js_1.Events.ClientReady, async (readyClient) => {
-    await Database_1.db.sync({ alter: true })
+client.once(discord_js_1.Events.ClientReady, (readyClient) => __awaiter(void 0, void 0, void 0, function* () {
+    yield Database_1.db.sync({ alter: true })
         .then(() => {
         console.log('Database & tables created!');
     })
         .catch((error) => {
         console.error('error: ', error);
     });
-    await whitelist_1.whitelist.loadData();
-    fs.writeFile('./whitelist/whitelist.txt', '', { flag: 'wx' }, (err) => {
+    yield whitelist_1.whitelist.loadData();
+    fs.writeFile('../config/whitelist/whitelist.txt', '', { flag: 'wx' }, (err) => {
         if (err) {
             console.log('whitelist found');
         }
@@ -95,8 +106,8 @@ client.once(discord_js_1.Events.ClientReady, async (readyClient) => {
         }
     });
     console.log(`Ready! Logged in as ${readyClient.user.tag}`);
-});
-client.on(discord_js_1.Events.InteractionCreate, async (interaction) => {
+}));
+client.on(discord_js_1.Events.InteractionCreate, (interaction) => __awaiter(void 0, void 0, void 0, function* () {
     if (!interaction.isChatInputCommand())
         return;
     const command = interaction.client.commands.get(interaction.commandName);
@@ -105,17 +116,17 @@ client.on(discord_js_1.Events.InteractionCreate, async (interaction) => {
         return;
     }
     try {
-        await command.execute(interaction);
+        yield command.execute(interaction);
     }
     catch (error) {
         console.error(error);
         if (interaction.replied || interaction.deferred) {
-            await interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
+            yield interaction.followUp({ content: 'There was an error while executing this command!', ephemeral: true });
         }
         else {
-            await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+            yield interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
         }
     }
-});
+}));
 // Log in to Discord with your client's token
 client.login(config_json_1.token);

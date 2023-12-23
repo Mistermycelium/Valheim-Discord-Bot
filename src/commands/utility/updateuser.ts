@@ -1,6 +1,7 @@
 import { SlashCommandBuilder } from 'discord.js';
 import { whitelist } from '../../modules/whitelist';
 import Validator from '../../modules/utility/Validator';
+import {UserRepository, UserInterface} from '../../modules/utility/repositories/UserRepository';
 
 // Updates users already in the database. Requires permissions to use.
 // For now, set roles manually within Discord.
@@ -26,7 +27,7 @@ module.exports = {
   async execute(interaction: { options: { getMentionable: (arg0: string) => any; getString: (arg0: string) => any; }; reply: (arg0: { content: string; ephemeral: boolean; }) => any; }) {
     try {
       const mentionable = interaction.options.getMentionable('user');
-      let usr: { [key: string]: any } = {
+      let usr: UserInterface = {
         DiscordID: mentionable.user.id,
         Username: mentionable.user.username,
       };

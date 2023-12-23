@@ -1,4 +1,13 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -22,31 +31,35 @@ module.exports = {
         .addStringOption(option => option.setName('xbox')
         .setRequired(false)
         .setDescription('The users Xbox ID')),
-    async execute(interaction) {
-        try {
-            const mentionable = interaction.options.getMentionable('user');
-            let usr = {
-                DiscordID: mentionable.user.id,
-                Username: mentionable.user.username,
-            };
-            if (!await whitelist_1.whitelist.findUser(usr.DiscordID)) {
-                throw new Error(`User ${usr.Username} is not in the whitelist.`);
+    execute(interaction) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const mentionable = interaction.options.getMentionable('user');
+                let usr = {
+                    DiscordID: mentionable.user.id,
+                    Username: mentionable.user.username,
+                };
+                if (!(yield whitelist_1.whitelist.findUser(usr.DiscordID))) {
+                    throw new Error(`User ${usr.Username} is not in the whitelist.`);
+                }
+                if (interaction.options.getString('xbox')) {
+                    const xboxID = interaction.options.getString('xbox');
+                    Validator_1.default.validateId(xboxID, /^Xbox_\d{16}$/, `${xboxID} is not a valid Xbox ID`);
+                    usr.XboxID = xboxID;
+                }
+                if (interaction.options.getString('steam')) {
+                    const steam64ID = interaction.options.getString('steam');
+                    Validator_1.default.validateId(steam64ID, /^765\d{14}$/, `${steam64ID} is not a valid Steam ID`);
+                    usr.SteamID = steam64ID;
+                }
+                yield whitelist_1.whitelist.updateUser(usr);
+                yield interaction.reply({ content: `${mentionable} updated`, ephemeral: true });
             }
-            if (interaction.options.getString('xbox')) {
-                const xboxID = interaction.options.getString('xbox');
-                Validator_1.default.validateId(xboxID, /^Xbox_\d{16}$/, `${xboxID} is not a valid Xbox ID`);
-                usr.XboxID = xboxID;
+            catch (error) {
+                if (error instanceof Error) {
+                    yield interaction.reply({ content: `Failed: ${error.message}`, ephemeral: true });
+                }
             }
-            if (interaction.options.getString('steam')) {
-                const steam64ID = interaction.options.getString('steam');
-                Validator_1.default.validateId(steam64ID, /^765\d{14}$/, `${steam64ID} is not a valid Steam ID`);
-                usr.SteamID = steam64ID;
-            }
-            await whitelist_1.whitelist.updateUser(usr);
-            await interaction.reply({ content: `${mentionable} updated`, ephemeral: true });
-        }
-        catch (error) {
-            await interaction.reply({ content: `Failed: ${error.message}`, ephemeral: true });
-        }
+        });
     },
 };

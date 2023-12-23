@@ -44,7 +44,7 @@ client.once(Events.ClientReady, async readyClient => {
       console.error('error: ', error);
     });
   await whitelist.loadData();
-  fs.writeFile('./whitelist/whitelist.txt', '', { flag: 'wx' }, (err) => {
+  fs.writeFile('../config/whitelist/whitelist.txt', '', { flag: 'wx' }, (err) => {
     if (err) {
       console.log('whitelist found');
     } else {

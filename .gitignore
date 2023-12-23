@@ -8,3 +8,5 @@ whitelist/import.json
 whitelist/import.txt
 whitelist/permittedlist.txt
 whitelist/whitelist.txt
+config/
+dist/

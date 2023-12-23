@@ -1,4 +1,13 @@
 "use strict";
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -20,29 +29,38 @@ module.exports = {
         .addStringOption(option => option.setName('xbox')
         .setRequired(false)
         .setDescription('The users Xbox ID')),
-    async execute(interaction) {
-        const mentionable = interaction.options.getMentionable('user');
-        let usr = {
-            DiscordID: mentionable.user.id,
-            Username: mentionable.user.username,
-        };
-        // console.log(mentionable.user);
-        if (await whitelist_1.whitelist.findUser(usr.DiscordID)) {
-            if (interaction.options.getString('xbox')) {
-                const xboxID = interaction.options.getString('xbox');
-                Validator_1.default.validateId(xboxID, /^Xbox_\d{16}$/, `${xboxID} is not a valid Xbox ID`);
-                usr.XboxID = xboxID;
+    execute(interaction) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const mentionable = interaction.options.getMentionable('user');
+            let usr = {
+                DiscordID: mentionable.user.id,
+                Username: mentionable.user.username,
+            };
+            // console.log(mentionable.user);
+            if (yield whitelist_1.whitelist.findUser(usr.DiscordID)) {
+                yield interaction.reply({ content: `${mentionable} is already registered, try update instead.`, ephemeral: true });
             }
-            if (interaction.options.getString('steam')) {
-                const steam64ID = interaction.options.getString('steam');
-                Validator_1.default.validateId(steam64ID, /^765\d{14}$/, `${steam64ID} is not a valid Steam ID`);
-                usr.SteamID = steam64ID;
+            else {
+                if (interaction.options.getString('xbox')) {
+                    const xboxID = interaction.options.getString('xbox');
+                    Validator_1.default.validateId(xboxID, /^Xbox_\d{16}$/, `${xboxID} is not a valid Xbox ID`);
+                    usr.XboxID = xboxID;
+                }
+                if (interaction.options.getString('steam')) {
+                    const steam64ID = interaction.options.getString('steam');
+                    try {
+                        Validator_1.default.validateId(steam64ID, /^765\d{14}$/, `${steam64ID} is not a valid Steam ID`);
+                    }
+                    catch (error) {
+                        if (error instanceof Error) {
+                            yield interaction.reply({ content: `Error: ${error.message}`, ephemeral: true });
+                        }
+                    }
+                    usr.SteamID = steam64ID;
+                }
+                yield whitelist_1.whitelist.addUser(usr);
+                yield interaction.reply({ content: `${mentionable} added.`, ephemeral: true });
             }
-            await whitelist_1.whitelist.addUser(usr);
-            await interaction.reply({ content: `${mentionable} added.`, ephemeral: true });
-        }
-        else {
-            await interaction.reply({ content: `Failed to add ${mentionable}`, ephemeral: true });
-        }
+        });
     },
 };

@@ -1,20 +1,20 @@
-import { User } from '../Database';
+import { User, UserInterface } from '../Database';
 import { UniqueConstraintError, ForeignKeyConstraintError } from 'sequelize';
 
-interface UserInterface extends User {
-  id: number;
-  Username: string;
-  email: string;
-  playerName: string;
-  SteamID: number;
-  XboxID: string;
-  DiscordID: number;
-}
+// interface UserInterface extends User {
+//   id?: number;
+//   Username?: string;
+//   email?: string;
+//   playerName?: string;
+//   SteamID?: number;
+//   XboxID?: string;
+//   DiscordID: number;
+// }
 
 class UserRepository {
   async getWhitelistData() {
     let result = await User.findAll();
-    result = result.map(item => item.dataValues);
+    result = result.map(item => item.dataValues as User);
     return result;
   }
 

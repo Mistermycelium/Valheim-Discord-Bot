@@ -21,7 +21,7 @@ module.exports = {
           option.setName('steam64id')
             .setDescription('Your 17 digit Steam64ID')
             .setRequired(true))),
-  async execute(interaction) {
+  async execute(interaction: { options: { getSubcommand: () => string; getString: (arg0: string) => any; }; user: { id: any; username: any; }; reply: (arg0: { content: string; ephemeral: boolean; }) => any; }) {
     // for xbox users
     if (interaction.options.getSubcommand() === 'xbox') {
       const xboxID = interaction.options.getString('xboxid');

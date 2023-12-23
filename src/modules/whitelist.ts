@@ -27,7 +27,7 @@ function buildWhitelist(Data: any[]) {
 }
 
 function writeWhitelist(content: string | NodeJS.ArrayBufferView) {
-  fs.writeFile('./whitelist/whitelist.txt', content, err => {
+  fs.writeFile('./config/whitelist/whitelist.txt', content, err => {
     if (err) {
       console.error(err);
     }

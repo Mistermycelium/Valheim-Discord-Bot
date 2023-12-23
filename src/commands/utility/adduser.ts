@@ -28,6 +28,8 @@ module.exports = {
     };
     // console.log(mentionable.user);
     if (await whitelist.findUser(usr.DiscordID)) {
+      await interaction.reply({ content: `${mentionable} is already registered, try update instead.`, ephemeral: true });
+    } else {
       if (interaction.options.getString('xbox')) {
         const xboxID = interaction.options.getString('xbox');
         Validator.validateId(xboxID, /^Xbox_\d{16}$/, `${xboxID} is not a valid Xbox ID`);
@@ -36,13 +38,17 @@ module.exports = {
 
       if (interaction.options.getString('steam')) {
         const steam64ID = interaction.options.getString('steam');
+        try{
         Validator.validateId(steam64ID, /^765\d{14}$/, `${steam64ID} is not a valid Steam ID`);
+        } catch (error){
+          if (error instanceof Error) {
+            await interaction.reply({ content: `Error: ${error.message}`, ephemeral: true});
+          }
+        }
         usr.SteamID = steam64ID;
       }
       await whitelist.addUser(usr);
       await interaction.reply({ content: `${mentionable} added.`, ephemeral: true });
-    } else {
-      await interaction.reply({ content: `Failed to add ${mentionable}`, ephemeral: true });
     }
   },
 };

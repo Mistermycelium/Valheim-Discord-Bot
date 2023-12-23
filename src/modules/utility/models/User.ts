@@ -1,16 +1,23 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
 
-interface UserInstance extends Model {
-  id: number;
-  Username: string;
-  email: string;
-  playerName: string;
-  SteamID: number;
-  XboxID: string;
+interface UserInterface {
+  id?: number;
+  Username?: string;
+  email?: string;
+  playerName?: string;
+  SteamID?: number;
+  XboxID?: string;
   DiscordID: number;
 }
 
-class User extends Model<UserInstance> {
+class User extends Model<UserInterface, UserInterface> implements UserInterface {
+  id?: number;
+  Username?: string;
+  email?: string;
+  playerName?: string;
+  SteamID?: number;
+  XboxID?: string;
+  DiscordID!: number;
   static initModel(sequelize: Sequelize) {
     return super.init(
       {
@@ -61,4 +68,4 @@ class User extends Model<UserInstance> {
   }
 }
 
-export default User;
+export { User, UserInterface };
