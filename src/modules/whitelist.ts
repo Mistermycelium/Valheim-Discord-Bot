@@ -60,7 +60,6 @@ export const whitelist = {
       const usr = whitelistData.find((user: { DiscordID: any; }) => user.DiscordID === discID);
       const whitelist = buildWhitelist(whitelistData);
       writeWhitelist(whitelist);
-      // uploadWhitelist();
       return usr;
     },
     addUser: async function(user: any) {
@@ -74,25 +73,19 @@ export const whitelist = {
       whitelistData.push(user);
       const whitelist = buildWhitelist(whitelistData);
       writeWhitelist(whitelist);
-      // uploadWhitelist();
       console.log(user);
     },
     removeUser: async function(user: UserInterface) {
       whitelistData = whitelistData.filter((item: { DiscordID: any; }) => item.DiscordID !== user.DiscordID);
       const whitelist = buildWhitelist(whitelistData);
       writeWhitelist(whitelist);
-      // uploadWhitelist();
       userRepository.removeUser(user);
     },
     updateUser: async function(user: UserInterface) {
       await userRepository.updateUser(user);
       whitelistData = whitelistData.map((item: { DiscordID: any; }) => item.DiscordID === user.DiscordID ? { ...item, ...user } : item);
-      // whitelistData.push(user);
       console.log(whitelistData);
-      // console.log(user);
       const whitelist = buildWhitelist(whitelistData);
       writeWhitelist(whitelist);
-      // uploadWhitelist();
-      // console.log(user);
     },
   };

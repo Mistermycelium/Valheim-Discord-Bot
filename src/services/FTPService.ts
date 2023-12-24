@@ -12,7 +12,7 @@ export class FTPService implements ITransportMethod<IFTPLogin> {
         this.client.ftp.verbose = true;
     }
 
-    async upload(payload) {
+    async upload(payload: any) {
         if (this.logins.length > 0) {
             return;
         }

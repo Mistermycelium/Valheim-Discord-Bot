@@ -1,15 +1,6 @@
 import { User, UserInterface } from '../Database';
 import { UniqueConstraintError, ForeignKeyConstraintError } from 'sequelize';
 
-// interface UserInterface extends User {
-//   id?: number;
-//   Username?: string;
-//   email?: string;
-//   playerName?: string;
-//   SteamID?: number;
-//   XboxID?: string;
-//   DiscordID: number;
-// }
 
 class UserRepository {
   async getWhitelistData() {
