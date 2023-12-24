@@ -2,9 +2,11 @@ config.json
 deploy-commands.json
 node_modules
 .vscode/settings.json
-database.sqlite
+*.sqlite
 whitelist/import.js
 whitelist/import.json
 whitelist/import.txt
 whitelist/permittedlist.txt
 whitelist/whitelist.txt
+config/
+dist/
