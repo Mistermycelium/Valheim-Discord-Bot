@@ -1,13 +1,13 @@
 import { Readable } from 'stream';
-// import { ftplogins } from './config/config.json';
+import { ftplogins } from '../../../config/config.json';
+import { IFTPLogin } from '../../interfaces/IFTPLogin';
 import ftp from 'basic-ftp';
-let ftplogins = "";
 
 async function uploadWhitelist(whitelist: string | Readable) {
-  if (!Array.isArray(ftplogins)) {
+  if (ftplogins.length > 0) {
     return;
   }
-  ftplogins.forEach(async (login) => {
+  ftplogins.forEach(async (login: IFTPLogin) => {
     const client = new ftp.Client();
     client.ftp.verbose = true;
     try {
