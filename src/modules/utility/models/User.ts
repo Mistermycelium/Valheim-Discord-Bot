@@ -5,9 +5,9 @@ interface UserInterface {
   Username?: string;
   email?: string;
   playerName?: string;
-  SteamID?: number;
+  SteamID?: string;
   XboxID?: string;
-  DiscordID: number;
+  DiscordID: string;
 }
 
 class User extends Model<UserInterface, UserInterface> implements UserInterface {
@@ -15,9 +15,9 @@ class User extends Model<UserInterface, UserInterface> implements UserInterface 
   Username?: string;
   email?: string;
   playerName?: string;
-  SteamID?: number;
+  SteamID?: string;
   XboxID?: string;
-  DiscordID!: number;
+  DiscordID!: string;
   static initModel(sequelize: Sequelize) {
     return super.init(
       {
@@ -42,6 +42,10 @@ class User extends Model<UserInterface, UserInterface> implements UserInterface 
         SteamID: {
           type: DataTypes.BIGINT,
           allowNull: true,
+          get() {
+            const value = this.getDataValue('SteamID');
+            return value ? value.toString() : null;
+          },
         },
         XboxID: {
           type: DataTypes.STRING,
@@ -51,6 +55,10 @@ class User extends Model<UserInterface, UserInterface> implements UserInterface 
           type: DataTypes.BIGINT,
           unique: true,
           allowNull: false,
+          get() {
+            const value = this.getDataValue('DiscordID');
+            return value !== null ? value.toString() : null;
+          },
         },
       },
       {

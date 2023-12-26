@@ -17,7 +17,7 @@ class UserRepository {
     });
     if (existingUser) {
       // Update the user information
-      return this.updateUser(user);
+      return existingUser.update(user);
     } else {
       // Add the new user
       return User.create(user);

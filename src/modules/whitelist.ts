@@ -73,7 +73,7 @@ export const whitelist = {
       whitelistData.push(user);
       const whitelist = buildWhitelist(whitelistData);
       writeWhitelist(whitelist);
-      console.log(user);
+      // console.log(user);
     },
     removeUser: async function(user: UserInterface) {
       whitelistData = whitelistData.filter((item: { DiscordID: any; }) => item.DiscordID !== user.DiscordID);
@@ -84,7 +84,7 @@ export const whitelist = {
     updateUser: async function(user: UserInterface) {
       await userRepository.updateUser(user);
       whitelistData = whitelistData.map((item: { DiscordID: any; }) => item.DiscordID === user.DiscordID ? { ...item, ...user } : item);
-      console.log(whitelistData);
+      // console.log(whitelistData);
       const whitelist = buildWhitelist(whitelistData);
       writeWhitelist(whitelist);
     },
