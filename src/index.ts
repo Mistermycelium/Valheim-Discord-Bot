@@ -27,17 +27,18 @@ loadCommands(foldersPath, client);
 // Log in to Discord with your client's token
 client.login(token);
 
-function loadCommands(foldersPath: string, client: BotClient) {
-  const commandFolders = fs.readdirSync(foldersPath);
+function loadCommands(folderPath: string, botClient: BotClient) {
+  const commandFolders = fs.readdirSync(folderPath);
 
   for (const folder of commandFolders) {
-    const commandsPath = path.join(foldersPath, folder);
+    const commandsPath = path.join(folderPath, folder);
     const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
     for (const file of commandFiles) {
       const filePath = path.join(commandsPath, file);
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
       const command = require(filePath);
       if ('data' in command && 'execute' in command) {
-        client.commands.set(command.data.name, command);
+        botClient.commands.set(command.data.name, command);
       } else {
         console.log(`[WARNING] The command at ${filePath} is missing a required "data" or "execute" property.`);
       }

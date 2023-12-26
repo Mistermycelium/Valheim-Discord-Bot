@@ -22,7 +22,7 @@ module.exports = {
           .setDescription('The users Xbox ID')),
   async execute(interaction: { options: { getMentionable: (arg0: string) => any; getString: (arg0: string) => any; }; reply: (arg0: { content: string; ephemeral: boolean; }) => any; }) {
     const mentionable = interaction.options.getMentionable('user');
-    let usr: { [key: string]: any } = {
+    const usr: { [key: string]: any } = {
       DiscordID: mentionable.user.id,
       Username: mentionable.user.username,
     };
@@ -38,11 +38,11 @@ module.exports = {
 
       if (interaction.options.getString('steam')) {
         const steam64ID = interaction.options.getString('steam');
-        try{
-        Validator.validateId(steam64ID, /^765\d{14}$/, `${steam64ID} is not a valid Steam ID`);
-        } catch (error){
+        try {
+          Validator.validateId(steam64ID, /^765\d{14}$/, `${steam64ID} is not a valid Steam ID`);
+        } catch (error) {
           if (error instanceof Error) {
-            await interaction.reply({ content: `Error: ${error.message}`, ephemeral: true});
+            await interaction.reply({ content: `Error: ${error.message}`, ephemeral: true });
           }
         }
         usr.SteamID = steam64ID;
