@@ -11,9 +11,10 @@ module.exports = {
       try {
         await whitelist.addUser(user);
       } catch (error) {
-        if (error instanceof Error){
-        console.log(`Failed to add user ${user.Username}: ${error.message}`);
-      }}
+        if (error instanceof Error) {
+          console.log(`Failed to add user ${user.Username}: ${error.message}`);
+        }
+      }
     }));
     console.log('Imported');
     await interaction.reply({ content: 'Ooga Booga', ephemeral: true });

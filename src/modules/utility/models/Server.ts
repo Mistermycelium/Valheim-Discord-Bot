@@ -1,9 +1,9 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
 
 interface ServerInstance extends Model {
-  id: number;
+  id: string;
   name: string;
-  guildId: number;
+  guildId: string;
   ip: string;
   port: number;
 }

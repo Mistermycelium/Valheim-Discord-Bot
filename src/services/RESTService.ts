@@ -1,5 +1,5 @@
-import { ITransportMethod } from "../interfaces/ITransportMethod";
-import { IWhiteList } from "../interfaces/IWhiteList";
+import { ITransportMethod } from '../interfaces/ITransportMethod';
+import { IWhiteList } from '../interfaces/IWhiteList';
 
 export class RESTService implements ITransportMethod<IWhiteList> {
   upload(payload: IWhiteList): Promise<IWhiteList> {
@@ -18,6 +18,6 @@ export class RESTService implements ITransportMethod<IWhiteList> {
         reject(request.response);
       };
       request.send(JSON.stringify(payload));
-    })
+    });
   }
 }

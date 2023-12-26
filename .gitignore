@@ -11,3 +11,4 @@ whitelist/whitelist.txt
 config/
 dist/
 config/whitelist/whitelist.txt
+package-lock.json

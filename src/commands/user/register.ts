@@ -22,10 +22,10 @@ module.exports = {
           option.setName('steam64id')
             .setDescription('Your 17 digit Steam64ID')
             .setRequired(true))),
-/**
+  /**
  * This function executes the registration process for the bot.
  * It handles registration for both Xbox and Steam users.
- * 
+ *
  * @param interaction - The interaction object from the Discord API.
  */
   async execute(interaction: { options: { getSubcommand: () => string; getString: (arg0: string) => any; }; user: { id: any; username: any; }; reply: (arg0: { content: string; ephemeral: boolean; }) => any; }) {

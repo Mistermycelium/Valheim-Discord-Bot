@@ -2,7 +2,7 @@ import { Client, Collection, Interaction } from 'discord.js';
 import { db } from '../modules/utility/Database';
 import { whitelist } from '../modules/whitelist';
 import fs from 'fs';
-import { handleInteractionError } from "./errorHandlers";
+import { handleInteractionError } from './errorHandlers';
 
 class BotClient extends Client {
   commands!: Collection<string, any>;
@@ -58,7 +58,6 @@ async function createConfigFile() {
 }
 
 export async function handleInteractionCreate(interaction: Interaction) {
-  
   if (!interaction.isChatInputCommand()) return;
   const command = (interaction.client as BotClient).commands.get(interaction.commandName);
 
