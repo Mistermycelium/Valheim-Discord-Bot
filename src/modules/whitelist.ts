@@ -1,9 +1,10 @@
-import {UserRepository, UserInterface} from './utility/repositories/UserRepository';
-
-const userRepository = new UserRepository();
+/* eslint-disable no-shadow */
+import { UserRepository, UserInterface } from './utility/repositories/UserRepository';
 
 
 import fs from 'node:fs';
+
+const userRepository = new UserRepository();
 // import ftpConn from './utility/ftpconn';
 let whitelistData: any[];
 
@@ -38,54 +39,48 @@ function writeWhitelist(content: string | NodeJS.ArrayBufferView) {
 // function uploadWhitelist() {
 //   ftpConn.uploadWhitelist('./whitelist/whitelist.txt');
 // }
-function maptoStrings(arr: any[]) {
-  arr = arr.map((item: { [key: string]: any }) => ({
-    ...item,
-    DiscordID: String(item.DiscordID),
-    SteamID: String(item.SteamID)
-  }));
-}
+
 // writeWhitelist(buildWhitelist(whitelistData));
 
 export const whitelist = {
-    loadData: async function() {
-      whitelistData = await userRepository.getWhitelistData();
-      console.log('loaded whitelist data');
-    },
-    // uploadWhitelist: uploadWhitelist(),
-    // get whitelistData() {
-    //   return whitelistData;
-    // },
-    findUser: async function(discID: any) {
-      const usr = whitelistData.find((user: { DiscordID: any; }) => user.DiscordID === discID);
-      const whitelist = buildWhitelist(whitelistData);
-      writeWhitelist(whitelist);
-      return usr;
-    },
-    addUser: async function(user: any) {
-      try {
-        userRepository.addUser(user);
-      } catch (error) {
-        if (error instanceof Error) {
-          console.log(error.message);
-        }
+  loadData: async function() {
+    whitelistData = await userRepository.getWhitelistData();
+    console.log('loaded whitelist data');
+  },
+  // uploadWhitelist: uploadWhitelist(),
+  // get whitelistData() {
+  //   return whitelistData;
+  // },
+  findUser: async function(discID: any) {
+    const usr = whitelistData.find((user: { DiscordID: any; }) => user.DiscordID === discID);
+    const whitelist = buildWhitelist(whitelistData);
+    writeWhitelist(whitelist);
+    return usr;
+  },
+  addUser: async function(user: any) {
+    try {
+      userRepository.addUser(user);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log(error.message);
       }
-      whitelistData.push(user);
-      const whitelist = buildWhitelist(whitelistData);
-      writeWhitelist(whitelist);
-      // console.log(user);
-    },
-    removeUser: async function(user: UserInterface) {
-      whitelistData = whitelistData.filter((item: { DiscordID: any; }) => item.DiscordID !== user.DiscordID);
-      const whitelist = buildWhitelist(whitelistData);
-      writeWhitelist(whitelist);
-      userRepository.removeUser(user);
-    },
-    updateUser: async function(user: UserInterface) {
-      await userRepository.updateUser(user);
-      whitelistData = whitelistData.map((item: { DiscordID: any; }) => item.DiscordID === user.DiscordID ? { ...item, ...user } : item);
-      // console.log(whitelistData);
-      const whitelist = buildWhitelist(whitelistData);
-      writeWhitelist(whitelist);
-    },
-  };
+    }
+    whitelistData.push(user);
+    const whitelist = buildWhitelist(whitelistData);
+    writeWhitelist(whitelist);
+    // console.log(user);
+  },
+  removeUser: async function(user: UserInterface) {
+    whitelistData = whitelistData.filter((item: { DiscordID: any; }) => item.DiscordID !== user.DiscordID);
+    const whitelist = buildWhitelist(whitelistData);
+    writeWhitelist(whitelist);
+    userRepository.removeUser(user);
+  },
+  updateUser: async function(user: UserInterface) {
+    await userRepository.updateUser(user);
+    whitelistData = whitelistData.map((item: { DiscordID: any; }) => item.DiscordID === user.DiscordID ? { ...item, ...user } : item);
+    // console.log(whitelistData);
+    const whitelist = buildWhitelist(whitelistData);
+    writeWhitelist(whitelist);
+  },
+};
