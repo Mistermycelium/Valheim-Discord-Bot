@@ -1,7 +1,7 @@
 
 export interface IWhiteList {
   username: string;
-  discordId: number;
-  steamId?: number;
+  discordId: string;
+  steamId?: string;
   xboxId?: string; 
 }

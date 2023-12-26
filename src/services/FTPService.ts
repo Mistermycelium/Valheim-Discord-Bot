@@ -16,7 +16,7 @@ export class FTPService implements ITransportMethod<IFTPLogin> {
         if (this.logins.length > 0) {
             return;
         }
-        this.logins.forEach(async (login: IFTPLogin) => {3
+        this.logins.forEach(async (login: IFTPLogin) => {
             try {
                 await this.client.access(login);
                 if (login.folder) {

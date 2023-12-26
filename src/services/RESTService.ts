@@ -20,5 +20,4 @@ export class RESTService implements ITransportMethod<IWhiteList> {
       request.send(JSON.stringify(payload));
     })
   }
-   
 }

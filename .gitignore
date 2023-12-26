@@ -10,3 +10,4 @@ whitelist/permittedlist.txt
 whitelist/whitelist.txt
 config/
 dist/
+config/whitelist/whitelist.txt
