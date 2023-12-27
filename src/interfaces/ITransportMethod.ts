@@ -1,3 +1,3 @@
-export interface ITransportMethod<T> {
-  upload(payload: T): Promise<T>;
+export interface ITransportMethod<T, S> {
+  upload(config:T, payload: S): Promise<boolean>;
 }

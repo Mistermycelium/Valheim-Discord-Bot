@@ -1,9 +1,15 @@
 import { ITransportMethod } from '../interfaces/ITransportMethod';
 import { IWhiteList } from '../interfaces/IWhiteList';
 
-export class RESTService implements ITransportMethod<IWhiteList> {
-  upload(payload: IWhiteList): Promise<IWhiteList> {
-    return new Promise<IWhiteList>((resolve, reject) => {
+export class RESTService implements ITransportMethod<IWhiteList, string> {
+  config: IWhiteList;
+
+  constructor(config: IWhiteList) {
+    this.config = config;
+  }
+
+  upload(config: IWhiteList, payload: any): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
       const request = new XMLHttpRequest();
       request.open('POST', 'http://localhost:3000/api/whitelist', true);
       request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');

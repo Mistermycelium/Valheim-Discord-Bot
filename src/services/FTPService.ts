@@ -2,18 +2,20 @@ import { IFTPLogin } from '../interfaces/IFTPLogin';
 import { ITransportMethod } from '../interfaces/ITransportMethod';
 import ftp from 'basic-ftp';
 
-export class FTPService implements ITransportMethod<IFTPLogin> {
+export class FTPService implements ITransportMethod<IFTPLogin, string> {
+  config: IFTPLogin;
   client: any;
   logins: any;
 
-  constructor() {
+  constructor(config: IFTPLogin) {
+    this.config = config;
     this.client = new ftp.Client();
     this.client.ftp.verbose = true;
   }
 
-  async upload(payload: any) {
+  upload(config: IFTPLogin, payload: string): Promise<boolean> {
     if (this.logins.length > 0) {
-      return;
+      return Promise.resolve(false);
     }
     this.logins.forEach(async (login: IFTPLogin) => {
       try {
@@ -28,6 +30,6 @@ export class FTPService implements ITransportMethod<IFTPLogin> {
       }
     });
     this.client.close();
-    return payload;
+    return Promise.resolve(true);
   }
 }

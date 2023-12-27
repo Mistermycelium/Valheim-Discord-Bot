@@ -12,3 +12,7 @@ config/
 dist/
 config/whitelist/whitelist.txt
 package-lock.json
+config/whitelist/whitelist.txt
+c.txt
+b.txt
+a.txt
