@@ -1,0 +1,11 @@
+version: '3'
+services:
+  discordbot:
+    container_name: discordbot
+    build: .
+    volumes:
+      - /home/beeheim/gameservers/valheim/beeheim-vanilla/saves:/mnt/vanilla
+      - /home/beeheim/gameservers/valheim/beeheim-vanilla-plus/saves:/mnt/vanillaplus
+      - /home/beeheim/gameservers/valheim/beeheim-mutant-test/saves:/mnt/mutant
+      - ~/data/discordbot/db:/usr/src/app/dbs
+    restart: unless-stopped
