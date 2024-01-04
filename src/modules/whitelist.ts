@@ -1,4 +1,5 @@
 /* eslint-disable no-shadow */
+import { UserRepository, UserInterface } from './utility/repositories/UserRepository';
 
 import { UserRepository, UserInterface } from './utility/repositories/UserRepository';
 import { WhitelistService } from '../services/WhitelistService';

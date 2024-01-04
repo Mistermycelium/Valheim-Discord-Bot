@@ -42,6 +42,10 @@ class User extends Model<UserInterface, UserInterface> implements UserInterface 
         SteamID: {
           type: DataTypes.STRING,
           allowNull: true,
+          get() {
+            const value = this.getDataValue('SteamID');
+            return value ? value.toString() : null;
+          },
         },
         XboxID: {
           type: DataTypes.STRING,
@@ -51,6 +55,10 @@ class User extends Model<UserInterface, UserInterface> implements UserInterface 
           type: DataTypes.STRING,
           unique: true,
           allowNull: false,
+          get() {
+            const value = this.getDataValue('DiscordID');
+            return value !== null ? value.toString() : null;
+          },
         },
       },
       {
