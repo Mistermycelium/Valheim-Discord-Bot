@@ -40,25 +40,17 @@ class User extends Model<UserInterface, UserInterface> implements UserInterface 
           allowNull: true,
         },
         SteamID: {
-          type: DataTypes.BIGINT,
+          type: DataTypes.STRING,
           allowNull: true,
-          get() {
-            const value = this.getDataValue('SteamID');
-            return value ? value.toString() : null;
-          },
         },
         XboxID: {
           type: DataTypes.STRING,
           allowNull: true,
         },
         DiscordID: {
-          type: DataTypes.BIGINT,
+          type: DataTypes.STRING,
           unique: true,
           allowNull: false,
-          get() {
-            const value = this.getDataValue('DiscordID');
-            return value !== null ? value.toString() : null;
-          },
         },
       },
       {
