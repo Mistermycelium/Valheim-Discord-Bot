@@ -3,13 +3,13 @@ import { UniqueConstraintError, ForeignKeyConstraintError } from 'sequelize';
 
 
 class UserRepository {
-  async getWhitelistData() {
+  async getAll() {
     let result = await User.findAll();
     result = result.map(item => item.dataValues as User);
     return result;
   }
 
-  async addUser(user: UserInterface) {
+  async create(user: UserInterface) {
     const existingUser = await User.findOne({
       where: {
         DiscordID: user.DiscordID,
@@ -24,7 +24,7 @@ class UserRepository {
     }
   }
 
-  async removeUser(user: UserInterface) {
+  async delete(user: UserInterface) {
     try {
       const result = await User.destroy({
         where: {
@@ -40,7 +40,7 @@ class UserRepository {
     }
   }
 
-  async updateUser(user: UserInterface) {
+  async update(user: UserInterface) {
     try {
       const result = await User.update(user, {
         where: {

@@ -1,7 +1,7 @@
 import { SlashCommandBuilder } from 'discord.js';
 import { whitelist } from '../../modules/whitelist';
 import Validator from '../../modules/utility/Validator';
-import {UserRepository, UserInterface} from '../../modules/utility/repositories/UserRepository';
+import { UserInterface } from '../../modules/utility/repositories/UserRepository';
 
 // Updates users already in the database. Requires permissions to use.
 // For now, set roles manually within Discord.
@@ -27,7 +27,7 @@ module.exports = {
   async execute(interaction: { options: { getMentionable: (arg0: string) => any; getString: (arg0: string) => any; }; reply: (arg0: { content: string; ephemeral: boolean; }) => any; }) {
     try {
       const mentionable = interaction.options.getMentionable('user');
-      let usr: UserInterface = {
+      const usr: UserInterface = {
         DiscordID: mentionable.user.id,
         Username: mentionable.user.username,
       };
@@ -51,8 +51,9 @@ module.exports = {
       await whitelist.updateUser(usr);
       await interaction.reply({ content: `${mentionable} updated`, ephemeral: true });
     } catch (error) {
-      if (error instanceof Error){
-      await interaction.reply({ content: `Failed: ${error.message}`, ephemeral: true });
-    }}
+      if (error instanceof Error) {
+        await interaction.reply({ content: `Failed: ${error.message}`, ephemeral: true });
+      }
+    }
   },
 };

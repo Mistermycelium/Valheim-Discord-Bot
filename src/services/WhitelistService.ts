@@ -1,7 +1,7 @@
 import { IFSConfig } from '../interfaces/IFSConfig';
 import { IFTPLogin } from '../interfaces/IFTPLogin';
 import { IWhiteList } from '../interfaces/IWhiteList';
-import { FSService } from '../services/FSService';
+import { FSService as FileUploadService } from '../services/FSService';
 import { FTPService } from '../services/FTPService';
 import { RESTService } from '../services/RESTService';
 import { uploads } from '../../config/config.json';
@@ -10,7 +10,7 @@ import { uploads } from '../../config/config.json';
 // const fsconfig = JSON.parse(fs.readFileSync('./config.json', 'utf-8'));
 
 export class WhitelistService {
-  service?: FSService | FTPService | RESTService;
+  service?: FileUploadService | FTPService | RESTService;
 
   constructor() {
     this.service = undefined;
@@ -20,7 +20,7 @@ export class WhitelistService {
     return Promise.all(uploads.map(({ serviceType, config }) => {
       switch (serviceType) {
         case 'fs':
-          this.service = new FSService(config as unknown as IFSConfig);
+          this.service = new FileUploadService(config as unknown as IFSConfig);
           return this.service.upload(config as unknown as IFSConfig, whitelist);
         case 'ftp':
           this.service = new FTPService(config as unknown as IFTPLogin);
