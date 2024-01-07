@@ -1,5 +1,5 @@
 import { Client, Collection, Interaction } from 'discord.js';
-import { db } from '../modules/utility/Database';
+import { db } from '../data/Database';
 import { whitelist } from '../modules/whitelist';
 import fs from 'fs';
 import { handleInteractionError } from './errorHandlers';

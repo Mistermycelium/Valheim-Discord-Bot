@@ -1,7 +1,7 @@
 import { SlashCommandBuilder } from 'discord.js';
 import { whitelist } from '../../modules/whitelist';
 import Validator from '../../modules/utility/Validator';
-import { UserInterface } from '../../modules/utility/repositories/UserRepository';
+import { UserInterface } from '../../data/repositories/UserRepository';
 
 // Updates users already in the database. Requires permissions to use.
 // For now, set roles manually within Discord.

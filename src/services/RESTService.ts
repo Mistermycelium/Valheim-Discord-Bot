@@ -1,20 +1,22 @@
+import { RestConfig } from '../interfaces/IConfig';
 import { ITransportMethod } from '../interfaces/ITransportMethod';
-import { IWhiteList } from '../interfaces/IWhiteList';
+import { StatusCodes } from 'http-status-codes';
 
-export class RESTService implements ITransportMethod<IWhiteList, string> {
-  config: IWhiteList;
+export class RESTService implements ITransportMethod<RestConfig, string> {
+  config: RestConfig;
 
-  constructor(config: IWhiteList) {
+  constructor(config: RestConfig) {
     this.config = config;
   }
 
-  upload(config: IWhiteList, payload: any): Promise<boolean> {
+  upload(config: RestConfig, payload: any): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
       const request = new XMLHttpRequest();
-      request.open('POST', 'http://localhost:3000/api/whitelist', true);
+      const asAsyncRequest = true;
+      request.open('POST', config.url, asAsyncRequest);
       request.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
       request.onload = () => {
-        if (request.status >= 200 && request.status < 400) {
+        if (request.status >= StatusCodes.OK && request.status < StatusCodes.BAD_REQUEST) {
           resolve(payload);
         } else {
           reject(request.response);
@@ -27,3 +29,4 @@ export class RESTService implements ITransportMethod<IWhiteList, string> {
     });
   }
 }
+// 'http://localhost:3000/api/whitelist'

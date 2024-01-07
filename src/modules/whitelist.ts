@@ -1,11 +1,11 @@
 /* eslint-disable no-shadow */
 
-import { UserRepository, UserInterface } from './utility/repositories/UserRepository';
-import { WhitelistService } from '../services/WhitelistService';
+import { UserRepository, UserInterface } from '../data/repositories/UserRepository';
+import { UploadService } from '../services/UploadService';
+import { beeheimFileSystem } from '../../config/config.json';
+import { FileSystemConfig } from '../interfaces/IConfig';
 
-import fs from 'node:fs';
-
-const whitelistService = new WhitelistService();
+const whitelistService = new UploadService(beeheimFileSystem as FileSystemConfig);
 const userRepository = new UserRepository();
 // import ftpConn from './utility/ftpconn';
 let users: any[];
@@ -29,31 +29,14 @@ function buildWhitelist(Data: any[]) {
   return content;
 }
 
-function writeWhitelist(content: string | NodeJS.ArrayBufferView) {
-  fs.writeFile('./config/whitelist/whitelist.txt', content, err => {
-    if (err) {
-      console.error(err);
-    }
-    // success
-  });
-}
-
-
-// writeWhitelist(buildWhitelist(whitelistData));
-
 export const whitelist = {
   loadData: async function() {
     users = await userRepository.getAll();
     console.log('loaded all users');
   },
-  // uploadWhitelist: uploadWhitelist(),
-  // get whitelistData() {
-  //   return whitelistData;
-  // },
   findUser: async function(discID: any) {
     const usr = users.find((user: { DiscordID: any; }) => user.DiscordID === discID);
     const whitelist = buildWhitelist(users);
-    writeWhitelist(whitelist);
     whitelistService.uploadAll(whitelist);
     return usr;
   },
@@ -67,14 +50,12 @@ export const whitelist = {
     }
     users.push(user);
     const whitelist = buildWhitelist(users);
-    writeWhitelist(whitelist);
     whitelistService.uploadAll(whitelist);
     // console.log(user);
   },
   removeUser: async function(user: UserInterface) {
     users = users.filter((item: { DiscordID: any; }) => item.DiscordID !== user.DiscordID);
     const whitelist = buildWhitelist(users);
-    writeWhitelist(whitelist);
     whitelistService.uploadAll(whitelist);
     userRepository.delete(user);
   },
@@ -83,7 +64,6 @@ export const whitelist = {
     users = users.map((item: { DiscordID: any; }) => item.DiscordID === user.DiscordID ? { ...item, ...user } : item);
     // console.log(whitelistData);
     const whitelist = buildWhitelist(users);
-    writeWhitelist(whitelist);
     whitelistService.uploadAll(whitelist);
   },
 };
