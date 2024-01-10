@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from 'discord.js';
-import { whitelist } from '../../modules/whitelist';
+import { whitelist } from '../../modules/whitelistService';
 import Validator from '../../modules/utility/Validator';
 
 module.exports = {

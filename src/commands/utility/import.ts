@@ -1,6 +1,6 @@
 import { SlashCommandBuilder } from 'discord.js';
 import imports from '../../../config/whitelist/import.json';
-import { whitelist } from '../../modules/whitelist';
+import { whitelist } from '../../modules/whitelistService';
 
 module.exports = {
   data: new SlashCommandBuilder()

@@ -1,59 +1,60 @@
 import { User, UserInterface } from '../Database';
 import { UniqueConstraintError, ForeignKeyConstraintError } from 'sequelize';
+import Repository from './Repository';
 
-
-class UserRepository {
-  async getAll() {
-    let result = await User.findAll();
-    result = result.map(item => item.dataValues as User);
-    return result;
+class UserRepository implements Repository<User> {
+  public async getAll(): Promise<User[]> {
+    const result = await User.findAll();
+    return result.map(item => item.dataValues as User);
   }
 
-  async create(user: UserInterface) {
+  public async create(user: UserInterface): Promise<User> {
     const existingUser = await User.findOne({
       where: {
         DiscordID: user.DiscordID,
       },
     });
     if (existingUser) {
-      // Update the user information
       return existingUser.update(user);
     } else {
-      // Add the new user
       return User.create(user);
     }
   }
 
-  async delete(user: UserInterface) {
-    try {
-      const result = await User.destroy({
-        where: {
-          DiscordID: user.DiscordID,
-        },
-      });
-      return result;
-    } catch (error) {
-      if (error instanceof ForeignKeyConstraintError) {
+  public async delete(user: UserInterface): Promise<void> {
+    await User.destroy({
+      where: {
+        DiscordID: user.DiscordID,
+      },
+    }).then((rowsDeleted) => {
+      if (rowsDeleted === 1) {
+        console.log('Deleted successfully');
+      }
+    }).catch((err) => {
+      if (err instanceof ForeignKeyConstraintError) {
         throw new Error(`${JSON.stringify(user, null, 2)} is referenced by other entities.`);
       }
-      throw error;
-    }
+      throw err;
+    });
   }
 
-  async update(user: UserInterface) {
-    try {
-      const result = await User.update(user, {
-        where: {
-          DiscordID: user.DiscordID,
-        },
-      });
-      return result;
-    } catch (error) {
-      if (error instanceof UniqueConstraintError) {
+  public async update(user: UserInterface): Promise<User | Error> {
+    await User.update(user, {
+      where: {
+        DiscordID: user.DiscordID,
+      },
+    }).then((updated) => {
+      if (updated !== undefined) {
+        console.log('Updated successfully');
+        return user;
+      }
+    }).catch((err) => {
+      if (err instanceof UniqueConstraintError) {
         throw new Error(`${JSON.stringify(user, null, 2)} already exists`);
       }
-      throw error;
-    }
+      throw err;
+    });
+    throw new Error(`${JSON.stringify(user, null, 2)} not found`);
   }
 }
 

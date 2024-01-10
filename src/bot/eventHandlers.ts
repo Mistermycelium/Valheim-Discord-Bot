@@ -1,8 +1,8 @@
 import { Client, Collection, Interaction } from 'discord.js';
 import { db } from '../data/Database';
-import { whitelist } from '../modules/whitelist';
 import fs from 'fs';
 import { handleInteractionError } from './errorHandlers';
+import WhitelistService from '../modules/whitelistService';
 
 class BotClient extends Client {
   commands!: Collection<string, any>;
@@ -25,7 +25,7 @@ async function syncDatabase() {
 }
 
 async function loadWhitelist() {
-  await whitelist.loadData();
+  await WhitelistService.loadData(); //TODO fix the load of data from the whitelist on the server - Also add sync of file or diff from database.
   try {
     await fs.promises.writeFile('../config/whitelist/whitelist.txt', '', { flag: 'wx' });
     console.log('whitelist created');
