@@ -1,5 +1,5 @@
 import { SlashCommandBuilder } from 'discord.js';
-import { whitelist } from '../../modules/whitelistService';
+import UserService from '../../services/UserService';
 
 
 module.exports = {
@@ -34,10 +34,10 @@ module.exports = {
       const xboxID = interaction.options.getString('xboxid');
       const xboxRegExp = /^Xbox_\d{16}$/;
       if (xboxID && xboxRegExp.test(xboxID)) {
-        if (await whitelist.findUser(interaction.user.id)) {
+        if (await UserService.findBy(interaction.user.id)) {
           await interaction.reply({ content: `It looks like you're already registered ${interaction.user.username}`, ephemeral: true });
         } else {
-          await whitelist.addUser({ DiscordID: interaction.user.id, Username: interaction.user.username, XboxID: xboxID });
+          await UserService.addUser({ DiscordID: interaction.user.id, Username: interaction.user.username, XboxID: xboxID });
           // call function to manage record, check for existing record. if (record.exists)
           await interaction.reply({ content: `Thank you for registering with the XboxID ${xboxID}.`, ephemeral: true });
         }
@@ -50,10 +50,10 @@ module.exports = {
       const steam64ID = interaction.options.getString('steam64id');
       const steamRegExp = /^765\d{14}$/;
       if (steam64ID && steamRegExp.test(steam64ID)) {
-        if (await whitelist.findUser(interaction.user.id)) {
+        if (await UserService.findUser(interaction.user.id)) {
           await interaction.reply({ content: `It looks like you're already registered ${interaction.user.username}`, ephemeral: true });
         } else {
-          await whitelist.addUser({ DiscordID: interaction.user.id, Username: interaction.user.username, SteamID: steam64ID });
+          await UserService.addUser({ DiscordID: interaction.user.id, Username: interaction.user.username, SteamID: steam64ID });
           await interaction.reply({ content: `Thank you for registering with the Steam ID ${steam64ID}`, ephemeral: true });
         }
       } else {

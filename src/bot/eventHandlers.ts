@@ -2,7 +2,7 @@ import { Client, Collection, Interaction } from 'discord.js';
 import { db } from '../data/Database';
 import fs from 'fs';
 import { handleInteractionError } from './errorHandlers';
-import WhitelistService from '../modules/whitelistService';
+// import WhitelistService from '../services/lists/WhitelistService'; 
 
 class BotClient extends Client {
   commands!: Collection<string, any>;
@@ -10,7 +10,7 @@ class BotClient extends Client {
 
 export async function handleReadyEvent(readyClient: Client<true>) {
   await syncDatabase();
-  await loadWhitelist();
+  // TODO Load whitelist Entries before firing the event await WhitelistService.load();
   await createConfigFile();
   console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 }
@@ -21,16 +21,6 @@ async function syncDatabase() {
     console.log('Database & tables created!');
   } catch (error) {
     console.error('error: ', error);
-  }
-}
-
-async function loadWhitelist() {
-  await WhitelistService.loadData(); //TODO fix the load of data from the whitelist on the server - Also add sync of file or diff from database.
-  try {
-    await fs.promises.writeFile('../config/whitelist/whitelist.txt', '', { flag: 'wx' });
-    console.log('whitelist created');
-  } catch (err) {
-    console.log('whitelist found');
   }
 }
 

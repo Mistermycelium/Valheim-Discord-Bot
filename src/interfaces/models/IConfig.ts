@@ -17,6 +17,7 @@ interface ClientInfo {
   password?: string;
 }
 
+// eslint-disable-next-line no-shadow
 enum ServiceType {
   fs = 'fileSystem',
   ftp = 'ftp',

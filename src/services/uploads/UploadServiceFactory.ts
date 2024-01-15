@@ -1,8 +1,10 @@
-import { AbstractConfig, FileSystemConfig, FtpConfig, RestConfig } from '../interfaces/IConfig';
-import { FileUploadService } from '../services/FileUploadService';
-import { FTPService } from '../services/FTPService';
-import { RESTService } from '../services/RESTService';
+import { AbstractConfig, FileSystemConfig, FtpConfig, RestConfig } from '../../interfaces/models/IConfig';
+import { FileUploadService } from '../../services/uploads/FileUploadService';
+import { FTPService } from '../../services/uploads/FTPService';
+import { RESTService } from '../../services/uploads/RESTService';
+import { injectable } from 'inversify';
 
+@injectable()
 export class UploadServiceFactory {
   static create(config: AbstractConfig) {
     switch (config.serviceType) {

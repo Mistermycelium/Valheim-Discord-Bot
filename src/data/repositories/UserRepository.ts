@@ -1,17 +1,39 @@
 import { User, UserInterface } from '../Database';
-import { UniqueConstraintError, ForeignKeyConstraintError } from 'sequelize';
-import Repository from './Repository';
+import { UniqueConstraintError, ForeignKeyConstraintError, WhereOptions } from 'sequelize';
+import IRepository from './IRepository';
+import IListEntry from '../../interfaces/models/IListEntry';
 
-class UserRepository implements Repository<User> {
-  public async getAll(): Promise<User[]> {
+class UserRepository implements IRepository<User> {
+  async findBy(query: WhereOptions<IListEntry>): Promise<User[]> {
+    return User.findAll({ where: query })
+      .then(users => users.map(user => user.dataValues as User))
+      .catch(err => {
+        console.error('Error executing query', err);
+        throw err;
+      });
+  }
+
+  async findById(id: string): Promise<User> {
+    await User.findOne({ where: { discordId: id } })
+      .then((user) => {
+        if (user) {
+          return user.dataValues as User;
+        }
+      }, (err) => {
+        throw err;
+      });
+    throw new Error(`User ${id} not found`);
+  }
+
+  async getAll(): Promise<User[]> {
     const result = await User.findAll();
     return result.map(item => item.dataValues as User);
   }
 
-  public async create(user: UserInterface): Promise<User> {
+  async create(user: UserInterface): Promise<User> {
     const existingUser = await User.findOne({
       where: {
-        DiscordID: user.DiscordID,
+        discordId: user.discordId,
       },
     });
     if (existingUser) {
@@ -21,10 +43,10 @@ class UserRepository implements Repository<User> {
     }
   }
 
-  public async delete(user: UserInterface): Promise<void> {
+  async delete(user: UserInterface): Promise<void> {
     await User.destroy({
       where: {
-        DiscordID: user.DiscordID,
+        discordId: user.discordId,
       },
     }).then((rowsDeleted) => {
       if (rowsDeleted === 1) {
@@ -38,10 +60,10 @@ class UserRepository implements Repository<User> {
     });
   }
 
-  public async update(user: UserInterface): Promise<User | Error> {
+  async update(user: UserInterface): Promise<User> {
     await User.update(user, {
       where: {
-        DiscordID: user.DiscordID,
+        discordId: user.discordId,
       },
     }).then((updated) => {
       if (updated !== undefined) {

@@ -16,7 +16,7 @@ class UserServerStatus extends Model<UserServerStatusInterface> {
           allowNull: false,
         },
         statusType: {
-          type: DataTypes.ENUM('PERMITTED', 'BANNED', 'KICKED'),
+          type: DataTypes.ENUM('REGISTERED', 'WHITELISTED', 'BANNED', 'KICKED'),
           allowNull: true,
         },
       },

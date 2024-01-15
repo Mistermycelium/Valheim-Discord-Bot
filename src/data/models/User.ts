@@ -2,22 +2,22 @@ import { Model, DataTypes, Sequelize } from 'sequelize';
 
 interface UserInterface {
   id?: number;
-  Username?: string;
+  username?: string;
   email?: string;
   playerName?: string;
-  SteamID?: string;
-  XboxID?: string;
-  DiscordID: string;
+  steamId?: string;
+  xboxId?: string;
+  discordId: string;
 }
 
 class User extends Model<UserInterface, UserInterface> implements UserInterface {
   id?: number;
-  Username?: string;
+  username?: string;
   email?: string;
   playerName?: string;
-  SteamID?: string;
-  XboxID?: string;
-  DiscordID!: string;
+  steamId?: string;
+  xboxId?: string;
+  discordId!: string;
   static initModel(sequelize: Sequelize) {
     return super.init(
       {
@@ -39,15 +39,15 @@ class User extends Model<UserInterface, UserInterface> implements UserInterface 
           type: DataTypes.STRING,
           allowNull: true,
         },
-        SteamID: {
+        steamId: {
           type: DataTypes.STRING,
           allowNull: true,
         },
-        XboxID: {
+        XboxId: {
           type: DataTypes.STRING,
           allowNull: true,
         },
-        DiscordID: {
+        discordId: {
           type: DataTypes.STRING,
           unique: true,
           allowNull: false,
@@ -58,8 +58,13 @@ class User extends Model<UserInterface, UserInterface> implements UserInterface 
         modelName: 'User',
         validate: {
           eitherSteamIdOrXboxId() {
-            if (!this.SteamID && !this.XboxID) {
+            if (!this.steamId && !this.xboxId) {
               throw new Error('Either steamId or xboxId must be set');
+            }
+          },
+          discodIdRequired() {
+            if (!this.discordId) {
+              throw new Error('DiscordID must be set');
             }
           },
         },
