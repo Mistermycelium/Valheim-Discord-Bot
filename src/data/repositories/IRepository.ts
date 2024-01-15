@@ -1,12 +1,11 @@
 import { WhereOptions } from 'sequelize';
-import IListEntry from '../../interfaces/models/IListEntry';
 
 interface IRepository<T> {
-  findById(id: string): Promise<T>;
-
-  findBy(query: WhereOptions<IListEntry>): Promise<T[]>;
+  findBy(query: WhereOptions): Promise<T[]>;
 
   getAll(): Promise<T[]>
+
+  findById(id: string): Promise<T>;
 
   create(obj: T): Promise<T>
 

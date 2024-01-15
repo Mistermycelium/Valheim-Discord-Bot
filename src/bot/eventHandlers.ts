@@ -2,7 +2,6 @@ import { Client, Collection, Interaction } from 'discord.js';
 import { db } from '../data/Database';
 import fs from 'fs';
 import { handleInteractionError } from './errorHandlers';
-// import WhitelistService from '../services/lists/WhitelistService'; 
 
 class BotClient extends Client {
   commands!: Collection<string, any>;

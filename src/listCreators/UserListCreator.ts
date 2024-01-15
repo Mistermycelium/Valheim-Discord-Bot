@@ -6,7 +6,7 @@ export default abstract class UserListCreator {
     this.type = type;
   }
 
-  abstract build(): void;
+  abstract buildList(serverName: string): Promise<string>
   abstract exists(discordId: string): boolean;
   abstract add(discordId: string): void;
   abstract remove(discordId: string): void;

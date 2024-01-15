@@ -1,11 +1,17 @@
-import { User, UserInterface } from '../Database';
+import { User, UserInterface, UserServerStatus } from '../Database';
 import { UniqueConstraintError, ForeignKeyConstraintError, WhereOptions } from 'sequelize';
 import IRepository from './IRepository';
-import IListEntry from '../../interfaces/models/IListEntry';
 
 class UserRepository implements IRepository<User> {
-  async findBy(query: WhereOptions<IListEntry>): Promise<User[]> {
-    return User.findAll({ where: query })
+  async findBy(query: WhereOptions): Promise<User[]> {
+    return User.findAll({
+      where: query,
+      include: [{
+        model: UserServerStatus,
+        as: 'UserServerStatus',
+        where: { property: 'value' },
+      }],
+    })
       .then(users => users.map(user => user.dataValues as User))
       .catch(err => {
         console.error('Error executing query', err);

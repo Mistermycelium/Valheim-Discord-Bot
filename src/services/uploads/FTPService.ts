@@ -1,9 +1,7 @@
 import { FtpConfig } from '../../interfaces/models/IConfig';
-import { TransportMethod } from '../../interfaces/ITransportMethod';
+import { TransportMethod } from '../../interfaces/TransportMethod';
 import ftp from 'basic-ftp';
-import { injectable } from 'inversify';
 
-@injectable()
 export class FTPService extends TransportMethod<FtpConfig> {
   client: any;
   logins: any;

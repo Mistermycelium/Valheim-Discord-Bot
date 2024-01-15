@@ -1,12 +1,12 @@
 import { User } from '../../data/models/User';
+import IRepository from '../../data/repositories/IRepository';
 import { IService } from '../../interfaces/IService';
 import IListEntry from '../../interfaces/models/IListEntry';
 import UserListCreator from '../../listCreators/UserListCreator';
 import { UserListType } from '../../listCreators/UserListType';
-import UserService from '../UserService';
 
 export default class WhitelistService extends UserListCreator {
-  constructor(private userService: IService<User>,
+  constructor(private userRepository: IRepository<User>,
     private fileUploadService: IService<string>) {
     super(UserListType.WHITELIST);
   }
@@ -27,14 +27,22 @@ export default class WhitelistService extends UserListCreator {
     throw new Error('Method not implemented.');
   }
 
-  async build() {
+  async buildList(serverName: string): Promise<string> {
     console.log('Building whitelist');
-    await this.; //TODO fix the load of data from the whitelist on the server - Also add sync of file or diff from database.
-    try {
-      await g.promises.writeFile('../config/whitelist/whitelist.txt', '', { flag: 'wx' });
-      console.log('whitelist created');
-    } catch (err) {
-      console.log('whitelist found');
-    }
+    const whitelist = await this.userRepository.findBy({ name: serverName });
+    let content = '';
+    whitelist.forEach(user => {
+      let userstr = '';
+      if (user.steamId) {
+        userstr = `// Discord ID: ${user.discordId} Username: ${user.username}\n${user.username}\n\n`;
+        if (user.xboxId) {
+          userstr = userstr + `// Discord ID: ${user.discordId} Username: ${user.username}\n${user.xboxId}\n\n`;
+        }
+      } else if (user.xboxId) {
+        userstr = `// Discord ID: ${user.discordId} Username: ${user.username}\n${user.xboxId}\n\n`;
+      }
+      content = content + userstr;
+    });
+    return content;
   }
 }

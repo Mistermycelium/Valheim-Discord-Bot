@@ -1,9 +1,8 @@
 import fs from 'fs';
 
-import { TransportMethod } from '../../interfaces/ITransportMethod';
+import { TransportMethod } from '../../interfaces/TransportMethod';
 import { FileSystemConfig } from '../../interfaces/models/IConfig';
 import { injectable } from 'inversify';
-
 
 @injectable()
 export class FileUploadService extends TransportMethod<FileSystemConfig> {
@@ -17,7 +16,7 @@ export class FileUploadService extends TransportMethod<FileSystemConfig> {
   }
 
   private writeToFile(data: string): Promise<void> {
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       fs.writeFile(this.config.path, data, (err) => {
         if (err) {
           reject(err);
@@ -25,6 +24,10 @@ export class FileUploadService extends TransportMethod<FileSystemConfig> {
           resolve();
         }
       });
+    }).then(() => {
+      console.log('whitelist created');
+    }, (err) => {
+      console.log(`whitelist not created: ${err}`);
     });
   }
 }

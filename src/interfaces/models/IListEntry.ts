@@ -4,6 +4,4 @@ export default interface IListEntry {
   discordId: string;
   steamId?: string;
   xboxId?: string;
-  serverId: string;
-  serverName?: string;
 }
