@@ -25,31 +25,31 @@ enum ServiceType {
 }
 
 abstract class AbstractConfig {
-  serviceType: ServiceType;
+  serviceType: string;
   hostInfo: HostInfo;
 
-  constructor(serviceType: ServiceType, hostInfo: HostInfo) {
+  constructor(serviceType: string, hostInfo: HostInfo) {
     this.serviceType = serviceType;
     this.hostInfo = hostInfo;
   }
 }
 
-interface FileSystemServiceConfig extends AbstractConfig {
-  serviceType: ServiceType;
+export interface FileSystemServiceConfig extends AbstractConfig {
+  serviceType: string;
   hostInfo: HostInfo;
   clientInfo: ClientInfo;
   path: string;
 }
 
 interface FtpServiceConfig extends AbstractConfig {
-  serviceType: ServiceType;
+  serviceType: string;
   hostInfo: HostInfo;
   clientInfo: ClientInfo;
   path: string;
 }
 
 interface RestServiceConfig extends AbstractConfig {
-  serviceType: ServiceType;
+  serviceType: string;
   hostInfo: HostInfo;
   clientInfo: ClientInfo;
   url: string;

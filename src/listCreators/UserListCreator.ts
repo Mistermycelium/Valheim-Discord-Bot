@@ -7,8 +7,8 @@ export default abstract class UserListCreator {
   }
 
   abstract buildList(serverName: string): Promise<string>
-  abstract exists(discordId: string): boolean;
-  abstract add(discordId: string): void;
-  abstract remove(discordId: string): void;
+  abstract exists(user: IListEntry): boolean;
+  abstract add(user: IListEntry): void;
+  abstract remove(user: IListEntry): void;
   abstract load(): Array<IListEntry>;
 }

@@ -1,29 +1,30 @@
 import { User } from '../../data/models/User';
 import IRepository from '../../data/repositories/IRepository';
-import { IService } from '../../interfaces/IService';
+import { TransportMethod } from '../../interfaces/TransportMethod';
+import { FileSystemConfig } from '../../interfaces/models/IConfig';
 import IListEntry from '../../interfaces/models/IListEntry';
 import UserListCreator from '../../listCreators/UserListCreator';
 import { UserListType } from '../../listCreators/UserListType';
 
 export default class WhitelistService extends UserListCreator {
   constructor(private userRepository: IRepository<User>,
-    private fileUploadService: IService<string>) {
+    private fileUploadService: TransportMethod<FileSystemConfig>) {
     super(UserListType.WHITELIST);
   }
 
+  exists(user: IListEntry): boolean {
+    throw new Error('Method not implemented.');
+  }
+
+  add(user: IListEntry): void {
+    throw new Error('Method not implemented.');
+  }
+
+  remove(user: IListEntry): void {
+    throw new Error('Method not implemented.');
+  }
+
   load(): IListEntry[] {
-    throw new Error('Method not implemented.');
-  }
-
-  exists(discordId: string): boolean {
-    throw new Error('Method not implemented.');
-  }
-
-  add(discordId: string): void {
-    throw new Error('Method not implemented.');
-  }
-
-  remove(discordId: string): void {
     throw new Error('Method not implemented.');
   }
 

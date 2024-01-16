@@ -1,6 +1,20 @@
 import { SlashCommandBuilder } from 'discord.js';
-import WhitelistService from '../../../services/lists/WhitelistService';
 import Validator from '../../../modules/utility/Validator';
+import WhitelistService from '../../../services/lists/WhitelistService';
+import { UserRepository } from '../../../data/repositories/UserRepository';
+import { FileUploadService } from '../../../services/uploads/FileUploadService';
+import { FileSystemServiceConfig } from '../../../interfaces/models/IConfig';
+import config from '../../../../config/config.json';
+import UserService from '../../../services/UserService';
+import IListEntry from '../../../interfaces/models/IListEntry';
+
+const fileSystemConfig: FileSystemServiceConfig = config.beeheimVanillaAdminListFileSystem;
+const whitelistService = new WhitelistService(new UserRepository(), new FileUploadService(fileSystemConfig));
+
+
+const userRepository = new UserRepository();
+const userService = new UserService(userRepository);
+
 
 module.exports = {
   data:
@@ -22,18 +36,19 @@ module.exports = {
           .setDescription('The users Xbox ID')),
   async execute(interaction: { options: { getMentionable: (arg0: string) => any; getString: (arg0: string) => any; }; reply: (arg0: { content: string; ephemeral: boolean; }) => any; }) {
     const mentionable = interaction.options.getMentionable('user');
-    const usr: { [key: string]: any } = {
-      DiscordID: mentionable.user.id,
-      Username: mentionable.user.username,
-    };
+    const user: IListEntry = await userService.findBy(mentionable.user.id)
+      .then((usr) => {
+        return usr as IListEntry;
+      });
+
     // console.log(mentionable.user);
-    if (await WhitelistService.findUser(usr.DiscordID)) {
+    if (await whitelistService.exists(user)) { // TODO Should check if a user is whitelisted for a specific server
       await interaction.reply({ content: `${mentionable} is already registered, try update instead.`, ephemeral: true });
     } else {
       if (interaction.options.getString('xbox')) {
         const xboxID = interaction.options.getString('xbox');
         Validator.validateId(xboxID, /^Xbox_\d{16}$/, `${xboxID} is not a valid Xbox ID`);
-        usr.XboxID = xboxID;
+        user.xboxId = xboxID;
       }
 
       if (interaction.options.getString('steam')) {
@@ -45,9 +60,9 @@ module.exports = {
             await interaction.reply({ content: `Error: ${error.message}`, ephemeral: true });
           }
         }
-        usr.SteamID = steam64ID;
+        user.steamId = steam64ID;
       }
-      await WhitelistService.addUser(usr);
+      await whitelistService.add(user);
       await interaction.reply({ content: `${mentionable} added.`, ephemeral: true });
     }
   },

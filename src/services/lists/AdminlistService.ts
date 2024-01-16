@@ -7,23 +7,23 @@ export default class AdminlistService extends UserListCreator {
     super(UserListType.ADMINLIST);
   }
 
+  buildList(serverName: string): Promise<string> {
+    throw new Error('Method not implemented.');
+  }
+
+  exists(user: IListEntry): boolean {
+    throw new Error('Method not implemented.');
+  }
+
+  add(user: IListEntry): void {
+    throw new Error('Method not implemented.');
+  }
+
+  remove(user: IListEntry): void {
+    throw new Error('Method not implemented.');
+  }
+
   load(): IListEntry[] {
     throw new Error('Method not implemented.');
-  }
-
-  exists(discordId: string): boolean {
-    throw new Error('Method not implemented.');
-  }
-
-  add(discordId: string): void {
-    throw new Error('Method not implemented.');
-  }
-
-  remove(discordId: string): void {
-    throw new Error('Method not implemented.');
-  }
-
-  build() {
-    console.log('Building adminlist');
   }
 }

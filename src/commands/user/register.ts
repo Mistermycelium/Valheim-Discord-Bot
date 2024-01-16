@@ -1,7 +1,10 @@
 import { SlashCommandBuilder } from 'discord.js';
 import UserService from '../../services/UserService';
+import { UserRepository } from '../../data/repositories/UserRepository';
+import { User } from '../../data/models/User';
 
-
+const userRepository = new UserRepository();
+const userService = new UserService(userRepository);
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('register')
@@ -34,10 +37,11 @@ module.exports = {
       const xboxID = interaction.options.getString('xboxid');
       const xboxRegExp = /^Xbox_\d{16}$/;
       if (xboxID && xboxRegExp.test(xboxID)) {
-        if (await UserService.findBy(interaction.user.id)) {
+        if (await userService.findBy(interaction.user.id)) {
           await interaction.reply({ content: `It looks like you're already registered ${interaction.user.username}`, ephemeral: true });
         } else {
-          await UserService.addUser({ DiscordID: interaction.user.id, Username: interaction.user.username, XboxID: xboxID });
+          const user = { discordId: interaction.user.id, username: interaction.user.username, xboxId: xboxID } as User;
+          await userService.create(user);
           // call function to manage record, check for existing record. if (record.exists)
           await interaction.reply({ content: `Thank you for registering with the XboxID ${xboxID}.`, ephemeral: true });
         }
@@ -50,10 +54,11 @@ module.exports = {
       const steam64ID = interaction.options.getString('steam64id');
       const steamRegExp = /^765\d{14}$/;
       if (steam64ID && steamRegExp.test(steam64ID)) {
-        if (await UserService.findUser(interaction.user.id)) {
+        if (await userService.findBy(interaction.user.id)) {
           await interaction.reply({ content: `It looks like you're already registered ${interaction.user.username}`, ephemeral: true });
         } else {
-          await UserService.addUser({ DiscordID: interaction.user.id, Username: interaction.user.username, SteamID: steam64ID });
+          const user = { discordId: interaction.user.id, username: interaction.user.username, steamId: steam64ID } as User;
+          await userService.create(user);
           await interaction.reply({ content: `Thank you for registering with the Steam ID ${steam64ID}`, ephemeral: true });
         }
       } else {
