@@ -29,32 +29,29 @@ module.exports = {
           .setRequired(false)
           .setDescription('The users Xbox ID')),
   async execute(interaction: { options: { getMentionable: (arg0: string) => any; getString: (arg0: string) => any; }; reply: (arg0: { content: string; ephemeral: boolean; }) => any; }) {
-    try {
-      const mentionable = interaction.options.getMentionable('user');
-      const user: User = await userService.findBy(mentionable.user.id);
+    const mentionable = interaction.options.getMentionable('user');
+    const user: User = await userService.findBy(mentionable.user.id);
 
-      if (!await userService.findBy(user.discordId)) {
-        throw new Error(`User ${user.username} is not in the whitelist.`);
-      }
-
-      if (interaction.options.getString('xbox')) {
-        const xboxID = interaction.options.getString('xbox');
-        Validator.validateId(xboxID, /^Xbox_\d{16}$/, `${xboxID} is not a valid Xbox ID`);
-        user.xboxId = xboxID;
-      }
-
-      if (interaction.options.getString('steam')) {
-        const steam64ID = interaction.options.getString('steam');
-        Validator.validateId(steam64ID, /^765\d{14}$/, `${steam64ID} is not a valid Steam ID`);
-        user.steamId = steam64ID;
-      }
-
-      await userService.update(user);
-      await interaction.reply({ content: `${mentionable} updated`, ephemeral: true });
-    } catch (error) {
-      if (error instanceof Error) {
-        await interaction.reply({ content: `Failed: ${error.message}`, ephemeral: true });
-      }
+    if (!await userService.findBy(user.discordId)) {
+      throw new Error(`User ${user.username} is not in the whitelist.`);
     }
+
+    if (interaction.options.getString('xbox')) {
+      const xboxID = interaction.options.getString('xbox');
+      Validator.validateId(xboxID, /^Xbox_\d{16}$/, `${xboxID} is not a valid Xbox ID`);
+      user.xboxId = xboxID;
+    }
+
+    if (interaction.options.getString('steam')) {
+      const steam64ID = interaction.options.getString('steam');
+      Validator.validateId(steam64ID, /^765\d{14}$/, `${steam64ID} is not a valid Steam ID`);
+      user.steamId = steam64ID;
+    }
+
+    await userService.update(user).then(() => {
+      interaction.reply({ content: `${mentionable} updated`, ephemeral: true });
+    }, (error) => {
+      interaction.reply({ content: `Failed: ${error.message}`, ephemeral: true });
+    });
   },
 };

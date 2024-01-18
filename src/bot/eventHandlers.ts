@@ -1,5 +1,5 @@
 import { Client, Collection, Interaction } from 'discord.js';
-import { db } from '../data/Database';
+import { dbContext } from '../data/Database';
 import fs from 'fs';
 import { handleInteractionError } from './errorHandlers';
 
@@ -16,7 +16,7 @@ export async function handleReadyEvent(readyClient: Client<true>) {
 
 async function syncDatabase() {
   try {
-    await db.sync({ alter: true });
+    await dbContext.sync({ alter: true });
     console.log('Database & tables created!');
   } catch (error) {
     console.error('error: ', error);

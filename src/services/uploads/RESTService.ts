@@ -1,4 +1,4 @@
-import { RestConfig } from '../../interfaces/models/IConfig';
+import { RestConfig } from '../../models/IConfig';
 import { TransportMethod } from '../../interfaces/TransportMethod';
 import { StatusCodes } from 'http-status-codes';
 import { injectable } from 'inversify';

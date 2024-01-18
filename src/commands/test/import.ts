@@ -1,14 +1,18 @@
 import { SlashCommandBuilder } from 'discord.js';
 import imports from '../../../config/whitelist/import.json';
-import WhitelistService from '../../services/lists/WhitelistService';
+import UserListService from '../../services/lists/UserListService';
 import { UserRepository } from '../../data/repositories/UserRepository';
 import { FileUploadService } from '../../services/uploads/FileUploadService';
-import { FileSystemServiceConfig } from '../../interfaces/models/IConfig';
+import { FileSystemServiceConfig } from '../../models/IConfig';
 import config from '../../../config/config.json';
-import IListEntry from '../../interfaces/models/IListEntry';
+import IListEntry from '../../models/IListEntry';
+import UserListBuilder from '../../services/lists/UserListBuilder';
+import UserListType from '../../models/UserListType';
 
 const fileSystemConfig: FileSystemServiceConfig = config.beeheimVanillaAdminListFileSystem;
-const whitelistService = new WhitelistService(new UserRepository(), new FileUploadService(fileSystemConfig));
+const userRepository = new UserRepository();
+// TODO be aware that it only currently imports the whitelist
+const whitelistService = new UserListService(userRepository, new FileUploadService(fileSystemConfig), new UserListBuilder(userRepository), UserListType.WHITELIST);
 
 
 module.exports = {

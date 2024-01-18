@@ -1,4 +1,4 @@
-import { FtpConfig } from '../../interfaces/models/IConfig';
+import { FtpConfig } from '../../models/IConfig';
 import { TransportMethod } from '../../interfaces/TransportMethod';
 import ftp from 'basic-ftp';
 

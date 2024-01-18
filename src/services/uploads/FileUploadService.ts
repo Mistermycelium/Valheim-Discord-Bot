@@ -1,7 +1,7 @@
 import fs from 'fs';
 
 import { TransportMethod } from '../../interfaces/TransportMethod';
-import { FileSystemConfig } from '../../interfaces/models/IConfig';
+import { FileSystemConfig } from '../../models/IConfig';
 import { injectable } from 'inversify';
 
 @injectable()

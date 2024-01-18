@@ -5,3 +5,5 @@ export enum UserListType {
   BANLIST = 'BANLIST',
   ADMINLIST = 'ADMINLIST'
 }
+
+export default UserListType;

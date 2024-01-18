@@ -21,7 +21,7 @@ class User extends Model<UserInterface, UserInterface> implements UserInterface 
   static initModel(sequelize: Sequelize) {
     return super.init(
       {
-        id: {
+        Id: {
           type: DataTypes.INTEGER,
           primaryKey: true,
           autoIncrement: true,
@@ -31,15 +31,15 @@ class User extends Model<UserInterface, UserInterface> implements UserInterface 
           type: DataTypes.STRING,
           allowNull: false,
         },
-        email: {
+        Email: {
           type: DataTypes.STRING,
           allowNull: true,
         },
-        playerName: {
+        PlayerName: {
           type: DataTypes.STRING,
           allowNull: true,
         },
-        steamId: {
+        SteamId: {
           type: DataTypes.STRING,
           allowNull: true,
         },
@@ -47,7 +47,7 @@ class User extends Model<UserInterface, UserInterface> implements UserInterface 
           type: DataTypes.STRING,
           allowNull: true,
         },
-        discordId: {
+        DiscordId: {
           type: DataTypes.STRING,
           unique: true,
           allowNull: false,

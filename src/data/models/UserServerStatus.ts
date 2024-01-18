@@ -1,4 +1,5 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
+import UserListType from '../../models/UserListType';
 
 interface UserServerStatusInterface extends Model {
   id: number;
@@ -9,14 +10,14 @@ class UserServerStatus extends Model<UserServerStatusInterface> {
   static initModel(sequelize: Sequelize) {
     return super.init(
       {
-        id: {
+        Id: {
           type: DataTypes.INTEGER,
           primaryKey: true,
           autoIncrement: true,
           allowNull: false,
         },
-        statusType: {
-          type: DataTypes.ENUM('REGISTERED', 'WHITELISTED', 'BANNED', 'KICKED'),
+        StatusType: {
+          type: DataTypes.ENUM<UserListType>,
           allowNull: true,
         },
       },

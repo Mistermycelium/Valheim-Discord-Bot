@@ -4,7 +4,7 @@ interface ServerInstance extends Model {
   id: string;
   name: string;
   guildId: string;
-  ip: string;
+  host: string;
   port: number;
 }
 
@@ -13,25 +13,25 @@ class Server extends Model<ServerInstance> {
     return super
       .init(
         {
-          id: {
+          Id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
             allowNull: false,
           },
-          name: {
+          Name: {
             type: DataTypes.STRING,
             allowNull: false,
           },
-          guildId: {
+          GuildId: {
             type: DataTypes.BIGINT,
             allowNull: false,
           },
-          ip: {
+          Host: {
             type: DataTypes.STRING,
             allowNull: false,
           },
-          port: {
+          Port: {
             type: DataTypes.INTEGER,
             allowNull: false,
           },

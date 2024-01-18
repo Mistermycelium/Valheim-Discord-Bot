@@ -2,20 +2,17 @@
 import { injectable } from 'inversify';
 import IRepository from '../data/repositories/IRepository';
 import EventEmitter from 'events';
-import { Mutex } from 'async-mutex';
 import { IService } from '../interfaces/IService';
-import { User } from '../data/models/User';
+import { User, UserInterface } from '../data/models/User';
 
 @injectable()
 export default class UserService implements IService<User> {
   private eventEmitter: EventEmitter;
-  private mutex: Mutex;
 
   constructor(
-    private userRepository: IRepository<User>) {
+    private userRepository: IRepository<UserInterface>) {
     this.userRepository = userRepository;
     this.eventEmitter = new EventEmitter();
-    this.mutex = new Mutex();
   }
 
   public async findBy(discordId: string): Promise<User> {
@@ -25,6 +22,8 @@ export default class UserService implements IService<User> {
         if (user) {
           return user;
         }
+      }, (err) => {
+        throw new Error(`An error occurred when searching for user with discordId: ${discordId} , error: ${err}`);
       });
     throw new Error(`User ${discordId} not found`);
   }
@@ -33,12 +32,12 @@ export default class UserService implements IService<User> {
     await this.userRepository
       .create(user)
       .then((created) => {
-        if (created) {
-          console.log(`${created.username}, DiscorId: ${user.discordId} was created successfully`);
-          return created;
-        }
+        console.log(`${created.username}, DiscorId: ${user.discordId} was created successfully`);
+        this.eventEmitter.emit('user.created', created);
+        return created;
+      }, (err) => {
+        throw new Error(`Error creating ${user.username}:, DiscorId: ${user.discordId}, error: ${err}`);
       });
-
     throw new Error(`Error creating ${user.username}:, DiscorId: ${user.discordId}`);
   }
 
@@ -46,15 +45,23 @@ export default class UserService implements IService<User> {
     await this.userRepository
       .update(user)
       .then((updated) => {
-        if (updated instanceof User) {
-          console.log(`${updated.username}, DiscorId: ${user.discordId} was Updated successfully`);
-        }
+        console.log(`${updated.username}, DiscorId: ${user.discordId} was Updated successfully`);
+        this.eventEmitter.emit('user.updated', updated);
+        return updated;
+      }, (err) => {
+        throw new Error(`Error updating ${user.username}:, DiscorId: ${user.discordId}, error: ${err}`);
       });
-
     throw new Error(`Error updating ${user.username}:, DiscorId: ${user.discordId}`);
   }
 
   async delete(user: User): Promise<void> {
-    await this.userRepository.delete(user);
+    await this.userRepository.delete(user)
+      .then(() => {
+        console.log(`${user.username}, DiscorId: ${user.discordId} was deleted successfully`);
+        this.eventEmitter.emit('user.deleted', user.username);
+      }, (err) => {
+        console.log(`Error deleting ${user.username}:, DiscorId: ${user.discordId}`);
+        throw err;
+      });
   }
 }

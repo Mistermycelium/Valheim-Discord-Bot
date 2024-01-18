@@ -1,4 +1,4 @@
-import { AbstractConfig } from '../../interfaces/models/IConfig';
+import { AbstractConfig } from '../../models/IConfig';
 import { TransportMethod } from '../../interfaces/TransportMethod';
 import { UploadServiceFactory } from '../../services/uploads/UploadServiceFactory';
 import { injectable } from 'inversify';

@@ -1,29 +1,40 @@
 import { User, UserInterface, UserServerStatus } from '../Database';
 import { UniqueConstraintError, ForeignKeyConstraintError, WhereOptions } from 'sequelize';
 import IRepository from './IRepository';
+import { Mutex } from 'async-mutex';
 
-class UserRepository implements IRepository<User> {
-  async findBy(query: WhereOptions): Promise<User[]> {
+class UserRepository implements IRepository<UserInterface> {
+  mutex: any;
+
+  constructor() {
+    this.mutex = new Mutex();
+  }
+
+  private releaseMutex() {
+    this.mutex.release();
+  }
+
+  async findBy(query: WhereOptions): Promise<UserInterface[]> {
     return User.findAll({
       where: query,
       include: [{
         model: UserServerStatus,
         as: 'UserServerStatus',
-        where: { property: 'value' },
+        where: query,
+        required: true,
       }],
     })
-      .then(users => users.map(user => user.dataValues as User))
+      .then(users => users.map(user => user.dataValues as UserInterface))
       .catch(err => {
-        console.error('Error executing query', err);
-        throw err;
+        throw new Error(`Error executing query: ${query}, error: ${err}`);
       });
   }
 
-  async findById(id: string): Promise<User> {
+  async findById(id: string): Promise<UserInterface> {
     await User.findOne({ where: { discordId: id } })
       .then((user) => {
         if (user) {
-          return user.dataValues as User;
+          return user.dataValues as UserInterface;
         }
       }, (err) => {
         throw err;
@@ -31,59 +42,76 @@ class UserRepository implements IRepository<User> {
     throw new Error(`User ${id} not found`);
   }
 
-  async getAll(): Promise<User[]> {
+  async getAll(): Promise<UserInterface[]> {
     const result = await User.findAll();
-    return result.map(item => item.dataValues as User);
+    return result.map(item => item.dataValues as UserInterface);
   }
 
-  async create(user: UserInterface): Promise<User> {
-    const existingUser = await User.findOne({
-      where: {
-        discordId: user.discordId,
-      },
+  async create(user: UserInterface): Promise<UserInterface> {
+    this.mutex.acquire().then(async () => {
+      const existingUser = await User.findOne({
+        where: {
+          discordId: user.discordId,
+        },
+      });
+      if (existingUser) {
+        this.releaseMutex();
+        return existingUser.update(user);
+      } else {
+        await User.create(user)
+          .then((created) => {
+            this.releaseMutex();
+            return created;
+          }, (err) => {
+            throw new Error(`Error creating ${user.username}:, DiscorId: ${user.discordId}, error: ${err}`);
+          });
+      }
+    }, (err: Error) => {
+      throw new Error(`Error creating ${user.username}:, DiscorId: ${user.discordId}, error: ${err}`);
     });
-    if (existingUser) {
-      return existingUser.update(user);
-    } else {
-      return User.create(user);
-    }
+    throw new Error(`Error creating ${user.username}:, DiscorId: ${user.discordId}`);
   }
 
-  async delete(user: UserInterface): Promise<void> {
-    await User.destroy({
-      where: {
-        discordId: user.discordId,
-      },
-    }).then((rowsDeleted) => {
-      if (rowsDeleted === 1) {
-        console.log('Deleted successfully');
-      }
-    }).catch((err) => {
-      if (err instanceof ForeignKeyConstraintError) {
-        throw new Error(`${JSON.stringify(user, null, 2)} is referenced by other entities.`);
-      }
-      throw err;
+  async delete(user: User): Promise<void> {
+    this.mutex.acquire().then(async () => {
+      await User.destroy({
+        where: {
+          discordId: user.discordId,
+        },
+      }).then((rowsDeleted) => {
+        if (rowsDeleted === 1) {
+          console.log('Deleted successfully');
+        }
+        this.releaseMutex();
+      }).catch((err) => {
+        if (err instanceof ForeignKeyConstraintError) {
+          throw new Error(`${JSON.stringify(user, null, 2)} is referenced by other entities.`);
+        }
+        throw err;
+      });
     });
   }
 
-  async update(user: UserInterface): Promise<User> {
-    await User.update(user, {
-      where: {
-        discordId: user.discordId,
-      },
-    }).then((updated) => {
-      if (updated !== undefined) {
-        console.log('Updated successfully');
-        return user;
-      }
-    }).catch((err) => {
-      if (err instanceof UniqueConstraintError) {
-        throw new Error(`${JSON.stringify(user, null, 2)} already exists`);
-      }
-      throw err;
+  async update(user: User): Promise<UserInterface> {
+    this.mutex.acquire().then(async () => {
+      await User.update(user, {
+        where: {
+          discordId: user.discordId,
+        },
+      }).then((updated) => {
+        if (updated !== undefined) {
+          console.log('Updated successfully');
+          this.releaseMutex();
+          return user;
+        }
+      }).catch((err) => {
+        if (err instanceof UniqueConstraintError) {
+          throw new Error(`${JSON.stringify(user, null, 2)} already exists`);
+        }
+      });
     });
     throw new Error(`${JSON.stringify(user, null, 2)} not found`);
   }
 }
 
-export { UserRepository, UserInterface };
+export { UserRepository };
