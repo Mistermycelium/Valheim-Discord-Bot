@@ -2,9 +2,9 @@ import fs from 'fs';
 
 import { TransportMethod } from '../../interfaces/TransportMethod';
 import { FileSystemConfig } from '../../models/IConfig';
-import { injectable } from 'inversify';
+// import { injectable } from 'inversify';
 
-@injectable()
+// @injectable()
 export class FileUploadService extends TransportMethod<FileSystemConfig> {
   constructor(protected config: FileSystemConfig) {
     super(config);

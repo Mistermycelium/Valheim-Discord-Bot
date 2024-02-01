@@ -22,7 +22,8 @@
 				"GitHub.copilot",
 				"GitHub.copilot-chat",
 				"ms-azuretools.vscode-docker",
-				"hediet.vscode-drawio"
+				"hediet.vscode-drawio",
+				"TianyangGuan.codemap"
 			]
 		}
 	}

@@ -1,9 +1,9 @@
 import { RestConfig } from '../../models/IConfig';
 import { TransportMethod } from '../../interfaces/TransportMethod';
 import { StatusCodes } from 'http-status-codes';
-import { injectable } from 'inversify';
+// import { injectable } from 'inversify';
 
-@injectable()
+// @injectable()
 export class RESTService extends TransportMethod<RestConfig> {
   constructor(protected config: RestConfig) {
     super(config);

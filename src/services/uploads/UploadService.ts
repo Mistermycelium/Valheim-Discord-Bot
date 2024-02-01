@@ -1,9 +1,9 @@
 import { AbstractConfig } from '../../models/IConfig';
 import { TransportMethod } from '../../interfaces/TransportMethod';
 import { UploadServiceFactory } from '../../services/uploads/UploadServiceFactory';
-import { injectable } from 'inversify';
+// import { injectable } from 'inversify';
 
-@injectable()
+// @injectable()
 export class UploadService extends TransportMethod<AbstractConfig> {
   service?: TransportMethod<AbstractConfig>;
 

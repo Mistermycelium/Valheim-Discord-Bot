@@ -1,20 +1,33 @@
-import { Sequelize } from 'sequelize';
+import { Dialect, Sequelize } from 'sequelize';
 import { User, UserInterface } from './models/User';
 import Server from './models/Server';
 import UserServerStatus from './models/UserServerStatus';
 
-const dbContext = new Sequelize('vhbot', 'VHBot', 'Taco', {
-  host: 'localhost',
-  dialect: 'sqlite',
+import dbConfig from '../../config/dbConfig.json';
+
+const dbContext = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password!, {
+  host: dbConfig.host,
+  port: 2561,
+  dialect: dbConfig.dialect as Dialect,
   logging: false,
-  storage: './dbs/dev.sqlite',
 });
 
 User.initModel(dbContext);
 Server.initModel(dbContext);
-UserServerStatus.initModel(dbContext);
+syncDbContext();
 
-User.belongsToMany(Server, { through: UserServerStatus });
-Server.belongsToMany(User, { through: UserServerStatus });
+UserServerStatus.initModel(dbContext);
+syncUserServerStatus();
+
+User.belongsToMany(Server, { through: UserServerStatus, foreignKey: 'UserId'});
+Server.belongsToMany(User, { through: UserServerStatus, foreignKey: 'ServerId'});
+
+async function syncDbContext() {
+  await dbContext.sync({ alter: true });
+}
+
+async function syncUserServerStatus() {
+  await UserServerStatus.sync({ alter: true });
+}
 
 export { dbContext, User, UserInterface, Server, UserServerStatus };

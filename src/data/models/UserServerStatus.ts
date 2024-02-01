@@ -3,7 +3,7 @@ import UserListType from '../../models/UserListType';
 
 interface UserServerStatusInterface extends Model {
   id: number;
-  statusType: Enumerator;
+  statusType: UserListType;
 }
 
 class UserServerStatus extends Model<UserServerStatusInterface> {
@@ -18,6 +18,7 @@ class UserServerStatus extends Model<UserServerStatusInterface> {
         },
         StatusType: {
           type: DataTypes.ENUM<UserListType>,
+          values: Object.values(UserListType),
           allowNull: true,
         },
       },

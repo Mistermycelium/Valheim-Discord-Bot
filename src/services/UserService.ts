@@ -1,11 +1,11 @@
 /* eslint-disable no-shadow */
-import { injectable } from 'inversify';
 import IRepository from '../data/repositories/IRepository';
 import EventEmitter from 'events';
 import { IService } from '../interfaces/IService';
 import { User, UserInterface } from '../data/models/User';
+// import { injectable } from 'inversify';
 
-@injectable()
+// @injectable()
 export default class UserService implements IService<User> {
   private eventEmitter: EventEmitter;
 
