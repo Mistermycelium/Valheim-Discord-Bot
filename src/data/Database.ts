@@ -14,20 +14,17 @@ const dbContext = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.p
 
 User.initModel(dbContext);
 Server.initModel(dbContext);
-syncDbContext();
-
 UserServerStatus.initModel(dbContext);
-syncUserServerStatus();
 
-User.belongsToMany(Server, { through: UserServerStatus, foreignKey: 'UserId'});
-Server.belongsToMany(User, { through: UserServerStatus, foreignKey: 'ServerId'});
+User.belongsToMany(Server, { through: UserServerStatus });
+Server.belongsToMany(User, { through: UserServerStatus });
 
-async function syncDbContext() {
-  await dbContext.sync({ alter: true });
-}
-
-async function syncUserServerStatus() {
+async function syncModels() {
+  await User.sync({ alter: true });
+  await Server.sync({ alter: true });
   await UserServerStatus.sync({ alter: true });
 }
+
+syncModels();
 
 export { dbContext, User, UserInterface, Server, UserServerStatus };

@@ -12,13 +12,13 @@ export default class UserListBuilder {
     let content = '';
     whitelist.forEach((user: UserInterface) => {
       let userstr = '';
-      if (user.steamId) {
-        userstr = `// Discord ID: ${user.discordId} Username: ${user.username}\n${user.username}\n\n`;
-        if (user.xboxId) {
-          userstr = userstr + `// Discord ID: ${user.discordId} Username: ${user.username}\n${user.xboxId}\n\n`;
+      if (user.SteamId) {
+        userstr = `// Discord ID: ${user.DiscordId} Username: ${user.Username}\n${user.Username}\n\n`;
+        if (user.XboxId) {
+          userstr = userstr + `// Discord ID: ${user.DiscordId} Username: ${user.Username}\n${user.XboxId}\n\n`;
         }
-      } else if (user.xboxId) {
-        userstr = `// Discord ID: ${user.discordId} Username: ${user.username}\n${user.xboxId}\n\n`;
+      } else if (user.XboxId) {
+        userstr = `// Discord ID: ${user.DiscordId} Username: ${user.Username}\n${user.XboxId}\n\n`;
       }
       content = content + userstr;
     });

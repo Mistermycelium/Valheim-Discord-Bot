@@ -2,8 +2,8 @@ import { Model, DataTypes, Sequelize } from 'sequelize';
 import UserListType from '../../models/UserListType';
 
 interface UserServerStatusInterface extends Model {
-  id: number;
-  statusType: UserListType;
+  Id: number;
+  StatusType: UserListType;
 }
 
 class UserServerStatus extends Model<UserServerStatusInterface> {
@@ -21,10 +21,30 @@ class UserServerStatus extends Model<UserServerStatusInterface> {
           values: Object.values(UserListType),
           allowNull: true,
         },
+        UserId: {
+          type: DataTypes.INTEGER,
+          references: {
+            model: 'User',
+            key: 'id',
+          },
+          onDelete: 'CASCADE',
+          onUpdate: 'CASCADE',
+        },
+        ServerId: {
+          type: DataTypes.INTEGER,
+          references: {
+            model: 'Server',
+            key: 'id',
+          },
+          onDelete: 'CASCADE',
+          onUpdate: 'CASCADE',
+        },
+
       },
       {
         sequelize,
         modelName: 'UserServerStatus',
+        timestamps: false,
       },
     );
   }

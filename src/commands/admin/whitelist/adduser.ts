@@ -48,7 +48,7 @@ module.exports = {
       if (interaction.options.getString('xbox')) {
         const xboxID = interaction.options.getString('xbox');
         Validator.validateId(xboxID, /^Xbox_\d{16}$/, `${xboxID} is not a valid Xbox ID`);
-        user.xboxId = xboxID;
+        user.XboxId = xboxID;
       }
 
       if (interaction.options.getString('steam')) {
@@ -60,7 +60,7 @@ module.exports = {
             await interaction.reply({ content: `Error: ${error.message}`, ephemeral: true });
           }
         }
-        user.steamId = steam64ID;
+        user.SteamId = steam64ID;
       }
       whitelistService.add(user);
       await interaction.reply({ content: `${mentionable} added.`, ephemeral: true });

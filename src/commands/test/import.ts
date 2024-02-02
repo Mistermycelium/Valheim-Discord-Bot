@@ -20,7 +20,7 @@ module.exports = {
     .setName('import')
     .setDescription('Sign up to join one of our servers!'),
   async execute(interaction: { reply: (arg0: { content: string; ephemeral: boolean; }) => any; }) {
-    await Promise.all(imports.map(async (user: IListEntry) => {
+    await Promise.all(imports.map(async (user: any) => {
       try {
         await whitelistService.add(user);
       } catch (error) {

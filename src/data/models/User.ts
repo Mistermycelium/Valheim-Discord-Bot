@@ -1,23 +1,23 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
 
 interface UserInterface {
-  id?: number;
-  username?: string;
-  email?: string;
-  playerName?: string;
-  steamId?: string;
-  xboxId?: string;
-  discordId: string;
+  Id?: number;
+  Username?: string;
+  Email?: string;
+  PlayerName?: string;
+  SteamId?: string;
+  XboxId?: string;
+  DiscordId: string;
 }
 
 class User extends Model<UserInterface, UserInterface> implements UserInterface {
-  id?: number;
-  username?: string;
-  email?: string;
-  playerName?: string;
-  steamId?: string;
-  xboxId?: string;
-  discordId!: string;
+  Id?: number;
+  Username?: string;
+  Email?: string;
+  PlayerName?: string;
+  SteamId?: string;
+  XboxId?: string;
+  DiscordId!: string;
   static initModel(sequelize: Sequelize) {
     return super.init(
       {
@@ -68,6 +68,7 @@ class User extends Model<UserInterface, UserInterface> implements UserInterface 
             }
           },
         },
+        timestamps: false,
       },
     );
   }

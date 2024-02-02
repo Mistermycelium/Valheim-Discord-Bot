@@ -32,20 +32,20 @@ module.exports = {
     const mentionable = interaction.options.getMentionable('user');
     const user: User = await userService.findBy(mentionable.user.id);
 
-    if (!await userService.findBy(user.discordId)) {
-      throw new Error(`User ${user.username} is not in the whitelist.`);
+    if (!await userService.findBy(user.DiscordId)) {
+      throw new Error(`User ${user.Username} is not in the whitelist.`);
     }
 
     if (interaction.options.getString('xbox')) {
       const xboxID = interaction.options.getString('xbox');
       Validator.validateId(xboxID, /^Xbox_\d{16}$/, `${xboxID} is not a valid Xbox ID`);
-      user.xboxId = xboxID;
+      user.XboxId = xboxID;
     }
 
     if (interaction.options.getString('steam')) {
       const steam64ID = interaction.options.getString('steam');
       Validator.validateId(steam64ID, /^765\d{14}$/, `${steam64ID} is not a valid Steam ID`);
-      user.steamId = steam64ID;
+      user.SteamId = steam64ID;
     }
 
     await userService.update(user).then(() => {

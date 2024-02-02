@@ -29,20 +29,20 @@ export default class UserListService implements IUserListService {
   }
 
   async exists(user: IListEntry): Promise<boolean> {
-    await this.userRepository.findById(user.discordId)
+    await this.userRepository.findById(user.DiscordId)
       .then((usr) => {
         if (usr) {
           return true;
         }
         return false;
-      }, (err) => { throw new Error(`Error finding user with discordId: ${user.discordId}, error: ${err}`); });
-    throw new Error(`Error finding user with discordId: ${user.discordId}`);
+      }, (err) => { throw new Error(`Error finding user with discordId: ${user.DiscordId}, error: ${err}`); });
+    throw new Error(`Error finding user with discordId: ${user.DiscordId}`);
   }
 
   async add(user: IListEntry): Promise<void> {
     const newUser: UserInterface = {
-      discordId: user.discordId,
-      username: user.username,
+      DiscordId: user.DiscordId,
+      Username: user.Username,
 
     } as UserInterface;
     await this.userRepository.create(newUser);
@@ -50,8 +50,8 @@ export default class UserListService implements IUserListService {
 
   async remove(user: IListEntry): Promise<void> {
     await this.userRepository.delete(user).then(() => {
-      console.log(`User ${user.discordId} was deleted successfully`);
-    }, (err) => { throw new Error(`Error deleting user with discordId: ${user.discordId}, error: ${err}`); },
+      console.log(`User ${user.DiscordId} was deleted successfully`);
+    }, (err) => { throw new Error(`Error deleting user with discordId: ${user.DiscordId}, error: ${err}`); },
     );
   }
 

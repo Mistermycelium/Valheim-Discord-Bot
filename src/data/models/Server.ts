@@ -1,19 +1,19 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
 
 interface ServerInstance extends Model {
-  id: number;
-  name: string;
-  guildId: string;
-  host: string;
-  port: number;
+  Id: number;
+  Name: string;
+  GuildId: string;
+  Host: string;
+  Port: number;
 }
 
 class Server extends Model<ServerInstance> {
-  id?:number;
-  name!: string;
-  guildId!: string;
-  host!: string;
-  port!: number;
+  Id?:number;
+  Name!: string;
+  GuildId!: string;
+  Host!: string;
+  Port!: number;
   static initModel(sequelize: Sequelize) {
     return super
       .init(
@@ -44,6 +44,7 @@ class Server extends Model<ServerInstance> {
         {
           sequelize,
           modelName: 'Server',
+          timestamps: false,
         },
       );
   }

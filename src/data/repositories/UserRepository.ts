@@ -31,7 +31,7 @@ class UserRepository implements IRepository<UserInterface> {
   }
 
   async findById(id: string): Promise<UserInterface> {
-    await User.findOne({ where: { discordId: id } })
+    await User.findOne({ where: { DiscordId: id } })
       .then((user) => {
         if (user) {
           return user.dataValues as UserInterface;
@@ -51,7 +51,7 @@ class UserRepository implements IRepository<UserInterface> {
     this.mutex.acquire().then(async () => {
       const existingUser = await User.findOne({
         where: {
-          discordId: user.discordId,
+          DiscordId: user.DiscordId,
         },
       });
       if (existingUser) {
@@ -63,20 +63,20 @@ class UserRepository implements IRepository<UserInterface> {
             this.releaseMutex();
             return created;
           }, (err) => {
-            throw new Error(`Error creating ${user.username}:, DiscorId: ${user.discordId}, error: ${err}`);
+            throw new Error(`Error creating ${user.Username}:, DiscorId: ${user.DiscordId}, error: ${err}`);
           });
       }
     }, (err: Error) => {
-      throw new Error(`Error creating ${user.username}:, DiscorId: ${user.discordId}, error: ${err}`);
+      throw new Error(`Error creating ${user.Username}:, DiscorId: ${user.DiscordId}, error: ${err}`);
     });
-    throw new Error(`Error creating ${user.username}:, DiscorId: ${user.discordId}`);
+    throw new Error(`Error creating ${user.Username}:, DiscorId: ${user.DiscordId}`);
   }
 
   async delete(user: User): Promise<void> {
     this.mutex.acquire().then(async () => {
       await User.destroy({
         where: {
-          discordId: user.discordId,
+          DiscordId: user.DiscordId,
         },
       }).then((rowsDeleted) => {
         if (rowsDeleted === 1) {
@@ -96,7 +96,7 @@ class UserRepository implements IRepository<UserInterface> {
     this.mutex.acquire().then(async () => {
       await User.update(user, {
         where: {
-          discordId: user.discordId,
+          DiscordId: user.DiscordId,
         },
       }).then((updated) => {
         if (updated !== undefined) {

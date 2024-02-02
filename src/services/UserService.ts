@@ -23,7 +23,7 @@ export default class UserService implements IService<User> {
           return user;
         }
       }, (err) => {
-        throw new Error(`An error occurred when searching for user with discordId: ${discordId} , error: ${err}`);
+        throw new Error(`An error occurred when searching for user with DiscordId: ${discordId} , error: ${err}`);
       });
     throw new Error(`User ${discordId} not found`);
   }
@@ -32,35 +32,35 @@ export default class UserService implements IService<User> {
     await this.userRepository
       .create(user)
       .then((created) => {
-        console.log(`${created.username}, DiscorId: ${user.discordId} was created successfully`);
+        console.log(`${created.Username}, DiscorId: ${user.DiscordId} was created successfully`);
         this.eventEmitter.emit('user.created', created);
         return created;
       }, (err) => {
-        throw new Error(`Error creating ${user.username}:, DiscorId: ${user.discordId}, error: ${err}`);
+        throw new Error(`Error creating ${user.Username}:, DiscorId: ${user.DiscordId}, error: ${err}`);
       });
-    throw new Error(`Error creating ${user.username}:, DiscorId: ${user.discordId}`);
+    throw new Error(`Error creating ${user.Username}:, DiscorId: ${user.DiscordId}`);
   }
 
   async update(user: User): Promise<User> {
     await this.userRepository
       .update(user)
       .then((updated) => {
-        console.log(`${updated.username}, DiscorId: ${user.discordId} was Updated successfully`);
+        console.log(`${updated.Username}, DiscorId: ${user.DiscordId} was Updated successfully`);
         this.eventEmitter.emit('user.updated', updated);
         return updated;
       }, (err) => {
-        throw new Error(`Error updating ${user.username}:, DiscorId: ${user.discordId}, error: ${err}`);
+        throw new Error(`Error updating ${user.Username}:, DiscorId: ${user.DiscordId}, error: ${err}`);
       });
-    throw new Error(`Error updating ${user.username}:, DiscorId: ${user.discordId}`);
+    throw new Error(`Error updating ${user.Username}:, DiscorId: ${user.DiscordId}`);
   }
 
   async delete(user: User): Promise<void> {
     await this.userRepository.delete(user)
       .then(() => {
-        console.log(`${user.username}, DiscorId: ${user.discordId} was deleted successfully`);
-        this.eventEmitter.emit('user.deleted', user.username);
+        console.log(`${user.Username}, DiscorId: ${user.DiscordId} was deleted successfully`);
+        this.eventEmitter.emit('user.deleted', user.Username);
       }, (err) => {
-        console.log(`Error deleting ${user.username}:, DiscorId: ${user.discordId}`);
+        console.log(`Error deleting ${user.Username}:, DiscorId: ${user.DiscordId}`);
         throw err;
       });
   }
