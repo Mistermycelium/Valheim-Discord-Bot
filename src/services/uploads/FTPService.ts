@@ -1,5 +1,5 @@
-import { FtpConfig } from '../../models/IConfig';
-import { TransportMethod } from '../../interfaces/TransportMethod';
+import { FtpConfig } from '../../models/IUploadConfig';
+import { TransportMethod } from './TransportMethod';
 import ftp from 'basic-ftp';
 
 export class FTPService extends TransportMethod<FtpConfig> {

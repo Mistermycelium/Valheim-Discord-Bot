@@ -13,24 +13,24 @@ import UserListBuilder from '../../../services/lists/UserListBuilder';
 import { UserListType } from '../../../models/UserListType';
 import { Interaction } from '../../../interfaces/discord/Interaction';
 
-const fileSystemConfig: FileSystemServiceConfig = uploadConfig.vanillaBanListFileSystem;
+const fileSystemConfig: FileSystemServiceConfig = uploadConfig.vanillaPermittedListFileSystem;
 const userRepository = new UserRepository();
 const serverRepository = new ServerRepository();
 const userStatusRepository = new UserServerStatusRepository();
-const banlistService = new UserListService(userRepository, serverRepository, userStatusRepository, new FileUploadService(fileSystemConfig),
-  new UserListBuilder(userRepository), UserListType.BANLIST);
+const permittedlistService = new UserListService(userRepository, serverRepository, userStatusRepository, new FileUploadService(fileSystemConfig),
+  new UserListBuilder(userRepository), UserListType.WHITELIST);
 const userService = new UserService(userRepository);
 
 module.exports = {
   data:
     new SlashCommandBuilder()
-      .setName('banuser')
+      .setName('permituser')
       .setDefaultMemberPermissions(0)
-      .setDescription('Adds a user to the banlist')
+      .setDescription('Adds a user to the permittedlist.')
       .addMentionableOption(option =>
         option.setName('user')
           .setRequired(true)
-          .setDescription('The User to add to the banlist'))
+          .setDescription('The User to add to the permittedlist'))
       .addStringOption(option =>
         option.setName('steam')
           .setRequired(false)
@@ -46,8 +46,8 @@ module.exports = {
         return usr as IListEntry;
       });
 
-    if (await banlistService.exists(user)) {
-      await interaction.reply({ content: `${mentionable} is already banned, try update instead.`, ephemeral: true });
+    if (await permittedlistService.exists(user)) {
+      await interaction.reply({ content: `${mentionable} is already in permittedlist, try update instead.`, ephemeral: true });
     } else {
       if (interaction.options.getString('xbox')) {
         const xboxID = interaction.options.getString('xbox');
@@ -66,7 +66,7 @@ module.exports = {
         }
         user.SteamId = steam64ID;
       }
-      banlistService.add(user);
+      permittedlistService.add(user);
       await interaction.reply({ content: `${mentionable} added.`, ephemeral: true });
     }
   },

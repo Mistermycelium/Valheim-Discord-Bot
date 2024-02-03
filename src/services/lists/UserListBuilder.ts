@@ -6,9 +6,9 @@ export default class UserListBuilder {
     this.userRepository = userRepository;
   }
 
-  async buildList(listType: UserListType): Promise<string> {
-    console.log('Building whitelist');
-    const whitelist: Array<UserInterface> = await this.userRepository.findBy({ userStatus: listType });
+  async buildList(userListType: UserListType): Promise<string> {
+    console.log(`Building ${userListType}`);
+    const whitelist: Array<UserInterface> = await this.userRepository.findBy({ userStatus: userListType });
     let content = '';
     whitelist.forEach((user: UserInterface) => {
       let userstr = '';

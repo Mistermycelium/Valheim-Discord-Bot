@@ -3,7 +3,7 @@ import { UniqueConstraintError, ForeignKeyConstraintError, WhereOptions } from '
 import IRepository from './IRepository';
 import { Mutex } from 'async-mutex';
 
-class UserRepository implements IRepository<UserInterface> {
+class UserRepository implements IRepository<User> {
   mutex: any;
 
   constructor() {
@@ -14,7 +14,7 @@ class UserRepository implements IRepository<UserInterface> {
     this.mutex.release();
   }
 
-  async findBy(query: WhereOptions): Promise<UserInterface[]> {
+  async findBy(query: WhereOptions): Promise<User[]> {
     return User.findAll({
       where: query,
       include: [{
@@ -24,17 +24,17 @@ class UserRepository implements IRepository<UserInterface> {
         required: true,
       }],
     })
-      .then(users => users.map(user => user.dataValues as UserInterface))
+      .then(users => users.map(user => user.dataValues as User))
       .catch(err => {
         throw new Error(`Error executing query: ${query}, error: ${err}`);
       });
   }
 
-  async findById(id: string): Promise<UserInterface> {
+  async findById(id: string): Promise<User> {
     return await User.findOne({ where: { DiscordId: id } })
       .then((user) => {
         if (user) {
-          return user.dataValues as UserInterface;
+          return user.dataValues as User;
         } else {
           throw new Error(`User ${id} not found`);
         }
@@ -43,12 +43,11 @@ class UserRepository implements IRepository<UserInterface> {
       });
   }
 
-  async getAll(): Promise<UserInterface[]> {
-    const result = await User.findAll();
-    return result.map(item => item.dataValues as UserInterface);
+  async getAll(): Promise<User[]> {
+    return await User.findAll();
   }
 
-  async create(user: UserInterface): Promise<UserInterface> {
+  async create(user: UserInterface): Promise<User> {
     return this.mutex.acquire().then(async () => {
       const existingUser = await User.findOne({
         where: {
@@ -72,12 +71,10 @@ class UserRepository implements IRepository<UserInterface> {
     });
   }
 
-  async delete(user: User): Promise<void> {
+  async delete(query: WhereOptions): Promise<void> {
     this.mutex.acquire().then(async () => {
       await User.destroy({
-        where: {
-          DiscordId: user.DiscordId,
-        },
+        where: query,
       }).then((rowsDeleted) => {
         if (rowsDeleted === 1) {
           console.log('Deleted successfully');
@@ -85,14 +82,14 @@ class UserRepository implements IRepository<UserInterface> {
         this.releaseMutex();
       }).catch((err) => {
         if (err instanceof ForeignKeyConstraintError) {
-          throw new Error(`${JSON.stringify(user, null, 2)} is referenced by other entities.`);
+          throw new Error(`The query: ${JSON.stringify(query, null, 2)} failed with Cause: ${err.message}.`);
         }
         throw err;
       });
     });
   }
 
-  async update(user: User): Promise<UserInterface> {
+  async update(user: User): Promise<User> {
     return this.mutex.acquire().then(async () => {
       await User.update(user, {
         where: {

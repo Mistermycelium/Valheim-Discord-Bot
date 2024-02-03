@@ -1,9 +1,10 @@
 import { Dialect, Sequelize } from 'sequelize';
 import { User, UserInterface } from './models/User';
-import Server from './models/Server';
-import UserServerStatus from './models/UserServerStatus';
+
 
 import dbConfig from '../../config/dbConfig.json';
+import { Server } from './models/Server';
+import { UserServerStatus } from './models/UserServerStatus';
 
 const dbContext = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password!, {
   host: dbConfig.host,

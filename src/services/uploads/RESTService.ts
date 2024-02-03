@@ -1,5 +1,5 @@
-import { RestConfig } from '../../models/IConfig';
-import { TransportMethod } from '../../interfaces/TransportMethod';
+import { RestConfig } from '../../models/IUploadConfig';
+import { TransportMethod } from './TransportMethod';
 import { StatusCodes } from 'http-status-codes';
 // import { injectable } from 'inversify';
 

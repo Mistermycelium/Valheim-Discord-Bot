@@ -31,7 +31,7 @@ module.exports = {
         .setDescription('For Steam players')
         .addStringOption(option =>
           option.setName('steam64id')
-            .setDescription('Your 17 digit Steam64ID')
+            .setDescription('Your 17 digit Steam64 ID')
             .setRequired(true))),
   /**
  * This function executes the registration process for the bot.
@@ -42,26 +42,26 @@ module.exports = {
   async execute(interaction: Interaction) {
     // for xbox users
     const subCommand = interaction.options.getSubcommand();
+    const xboxId = this.getInteractionOptionFrom('xboxid', interaction);
+    const steam64Id = this.getInteractionOptionFrom('steam64id', interaction);
 
     if (subCommand === SubCommands.XBOX) {
       console.log('XBOX');
-      const xboxID = this.getInteractionOptionFrom('xboxid', interaction);
-      if (xboxID && xboxRegExp.test(xboxID)) {
-        await this.checkIfUserIsRegistered(interaction, xboxID, this.registerXboxUser);
-        // await this.registerXboxUser(interaction, xboxID);
+      if (xboxId && xboxRegExp.test(xboxId)) {
+        await this.checkIfUserIsRegistered(interaction, xboxId);
+        await this.registerXboxUser(interaction, xboxId);
       } else {
-        await this.reply(interaction, `${xboxID} ${Replies.XBOX_ID_INVALID_OR_MISSING}`);
+        await this.reply(interaction, `${xboxId} ${Replies.XBOX_ID_INVALID_OR_MISSING}`);
       }
     }
 
     if (subCommand === SubCommands.STEAM) {
       console.log('STEAM');
-      const steam64ID = this.getInteractionOptionFrom('steam64id', interaction);
-      if (steam64ID && steamRegExp.test(steam64ID)) {
-        await this.checkIfUserIsRegistered(interaction, steam64ID, this.registerSteamUser);
-        // await this.registerSteamUser(interaction, steam64ID);
+      if (steam64Id && steamRegExp.test(steam64Id)) {
+        await this.checkIfUserIsRegistered(interaction, steam64Id);
+        await this.registerSteamUser(interaction, steam64Id);
       } else {
-        this.reply(interaction, `${steam64ID} ${Replies.STEAM_ID_INVALID_OR_MISSING}`);
+        this.reply(interaction, `${steam64Id} ${Replies.STEAM_ID_INVALID_OR_MISSING}`);
       }
     }
   },
@@ -71,14 +71,13 @@ module.exports = {
   async reply(interaction: Interaction, message: string): Promise<void> {
     await interaction.reply({ content: message, ephemeral: true });
   },
-  async checkIfUserIsRegistered(interaction: Interaction, id: string,
-    callback: (action: Interaction, accountId: string) => Promise<void>) {
+  async checkIfUserIsRegistered(interaction: Interaction, id: string) {
     try {
-      const isRegistered = await userService.findBy(interaction.user.id);
+      const discordId = interaction.user.id;
+      const discordUsername = interaction.user.username;
+      const isRegistered = await userService.findBy(discordId);
       if (isRegistered) {
-        this.reply(interaction, `${Replies.ALREADY_REGISTERED} ${interaction.user.username}`);
-      } else {
-        callback(interaction, id);
+        console.log(`Hi ${discordUsername}! discordId: ${discordId}. ${Replies.ALREADY_REGISTERED} with ${id}.`);
       }
     } catch (err) {
       console.log(err);
@@ -93,12 +92,11 @@ module.exports = {
       console.log(err);
     }
   },
-  async registerSteamUser(interaction: { options: { getSubcommand: () => string; getString: (arg0: string) => any; }; user: { id: any; username: any; }; reply: (arg0: { content: string; ephemeral: boolean; }) => any; }, steam64ID: string): Promise<void> {
+  async registerSteamUser(interaction: Interaction, steam64ID: string): Promise<void> {
     try {
       const user = { DiscordId: interaction.user.id, Username: interaction.user.username, SteamId: steam64ID } as UserInterface;
       await userService.create(user);
-      // await this.reply(interaction, `${Replies.STEAM_REGISTERED} ${steam64ID}`);
-      await interaction.reply({ content: `Thank you for registering with the Steam ID ${steam64ID}`, ephemeral: true });
+      await this.reply(interaction, `${Replies.STEAM_REGISTERED} ${steam64ID}`);
     } catch (err) {
       console.log(err);
     }

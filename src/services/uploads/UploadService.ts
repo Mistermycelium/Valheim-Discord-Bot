@@ -1,5 +1,5 @@
-import { AbstractConfig } from '../../models/IConfig';
-import { TransportMethod } from '../../interfaces/TransportMethod';
+import { AbstractConfig } from '../../models/IUploadConfig';
+import { TransportMethod } from './TransportMethod';
 import { UploadServiceFactory } from '../../services/uploads/UploadServiceFactory';
 // import { injectable } from 'inversify';
 

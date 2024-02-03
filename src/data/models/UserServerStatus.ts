@@ -1,12 +1,18 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
 import UserListType from '../../models/UserListType';
 
-interface UserServerStatusInterface extends Model {
-  Id: number;
+interface UserServerStatusInterface {
+  Id?: number;
   StatusType: UserListType;
+  UserId: number;
+  ServerId: number;
 }
 
-class UserServerStatus extends Model<UserServerStatusInterface> {
+class UserServerStatus extends Model<UserServerStatusInterface, UserServerStatusInterface> implements UserServerStatusInterface {
+  Id!: number;
+  StatusType!: UserListType;
+  UserId!: number;
+  ServerId!: number;
   static initModel(sequelize: Sequelize) {
     return super.init(
       {
@@ -50,4 +56,4 @@ class UserServerStatus extends Model<UserServerStatusInterface> {
   }
 }
 
-export default UserServerStatus;
+export { UserServerStatus, UserServerStatusInterface };

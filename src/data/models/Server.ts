@@ -1,6 +1,6 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
 
-interface ServerInstance extends Model {
+interface ServerInterface {
   Id: number;
   Name: string;
   GuildId: string;
@@ -8,8 +8,8 @@ interface ServerInstance extends Model {
   Port: number;
 }
 
-class Server extends Model<ServerInstance> {
-  Id?:number;
+class Server extends Model<ServerInterface, ServerInterface> implements ServerInterface {
+  Id!:number;
   Name!: string;
   GuildId!: string;
   Host!: string;
@@ -50,4 +50,4 @@ class Server extends Model<ServerInstance> {
   }
 }
 
-export default Server;
+export { Server, ServerInterface };

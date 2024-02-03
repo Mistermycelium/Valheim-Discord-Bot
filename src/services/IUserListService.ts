@@ -6,5 +6,6 @@ export default interface IUserListService {
   exists(user: IListEntry): Promise<boolean>;
   add(user: IListEntry): Promise<void>;
   remove(user: IListEntry): Promise<void>;
+  update(user: IListEntry): Promise<void>;
   load(): Promise<Array<IListEntry>>;
 }

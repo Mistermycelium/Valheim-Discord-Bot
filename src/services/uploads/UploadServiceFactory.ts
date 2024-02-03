@@ -1,4 +1,4 @@
-import { AbstractConfig, FileSystemConfig, FtpConfig, RestConfig } from '../../models/IConfig';
+import { AbstractConfig, FileSystemConfig, FtpConfig, RestConfig } from '../../models/IUploadConfig';
 import { FileUploadService } from '../../services/uploads/FileUploadService';
 import { FTPService } from '../../services/uploads/FTPService';
 import { RESTService } from '../../services/uploads/RESTService';

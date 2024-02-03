@@ -1,20 +1,20 @@
 import { Model, DataTypes, Sequelize } from 'sequelize';
 
 interface UserInterface {
-  Id?: number;
-  Username?: string;
+  Id: number;
+  Username: string;
   Email?: string;
-  PlayerName?: string;
+  PlayerName: string;
   SteamId?: string;
   XboxId?: string;
   DiscordId: string;
 }
 
 class User extends Model<UserInterface, UserInterface> implements UserInterface {
-  Id?: number;
-  Username?: string;
+  Id!: number;
+  Username!: string;
   Email?: string;
-  PlayerName?: string;
+  PlayerName!: string;
   SteamId?: string;
   XboxId?: string;
   DiscordId!: string;

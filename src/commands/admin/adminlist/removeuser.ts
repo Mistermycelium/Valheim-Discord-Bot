@@ -10,27 +10,27 @@ import { Interaction } from '../../../interfaces/discord/Interaction';
 import { ServerRepository } from '../../../data/repositories/ServerRepository';
 import { UserServerStatusRepository } from '../../../data/repositories/UserServerStatusRepository';
 
-const fileSystemConfig: FileSystemServiceConfig = uploadConfig.vanillaBanListFileSystem;
+const fileSystemConfig: FileSystemServiceConfig = uploadConfig.vanillaAdminListFileSystem;
 const userRepository = new UserRepository();
 const serverRepository = new ServerRepository();
 const userStatusRepository = new UserServerStatusRepository();
-const banlistService = new UserListService(userRepository, serverRepository, userStatusRepository, new FileUploadService(fileSystemConfig),
-  new UserListBuilder(userRepository), UserListType.BANLIST);
+const adminlistService = new UserListService(userRepository, serverRepository, userStatusRepository, new FileUploadService(fileSystemConfig),
+  new UserListBuilder(userRepository), UserListType.ADMINLIST);
 
 module.exports = {
   data:
     new SlashCommandBuilder()
-      .setName('unbanuser')
+      .setName('demotefromadmin')
       .setDefaultMemberPermissions(0)
-      .setDescription('Removes a user from the banlist')
+      .setDescription('Removes a user from the adminlist')
       .addMentionableOption(option =>
         option.setName('user')
           .setRequired(true)
-          .setDescription('The User to remove from the banlist')),
+          .setDescription('The User to remove from the adminlist')),
   async execute(interaction: Interaction) {
     const user = interaction.options.getMentionable('user');
-    if (await banlistService.exists(user)) {
-      banlistService.remove(user);
+    if (await adminlistService.exists(user)) {
+      adminlistService.remove(user);
       await interaction.reply({ content: `${user} removed.`, ephemeral: true });
     } else {
       await interaction.reply({ content: `Failed: ${user}`, ephemeral: true });

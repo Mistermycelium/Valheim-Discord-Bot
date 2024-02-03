@@ -1,7 +1,7 @@
 /* eslint-disable no-shadow */
 import IRepository from '../data/repositories/IRepository';
 import EventEmitter from 'events';
-import { IService } from '../interfaces/IService';
+import { IService } from './IService';
 import { UserInterface } from '../data/models/User';
 // import { injectable } from 'inversify';
 
@@ -59,9 +59,9 @@ export default class UserService implements IService<UserInterface> {
   }
 
   async delete(user: UserInterface): Promise<void> {
-    await this.userRepository.delete(user)
+    await this.userRepository.delete({ DiscordId: user.DiscordId })
       .then(() => {
-        console.log(`${user.Username}, DiscorId: ${user.DiscordId} was deleted successfully`);
+        console.log(`${user.Username}, DiscordId: ${user.DiscordId} was deleted successfully`);
         this.eventEmitter.emit('user.deleted', user.Username);
       }, (err) => {
         throw new Error(`Error deleting ${user.Username}:, DiscorId: ${user.DiscordId}, error: ${err}`);
