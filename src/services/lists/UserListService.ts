@@ -29,14 +29,13 @@ export default class UserListService implements IUserListService {
   }
 
   async exists(user: IListEntry): Promise<boolean> {
-    await this.userRepository.findById(user.DiscordId)
+    return await this.userRepository.findById(user.DiscordId)
       .then((usr) => {
         if (usr) {
           return true;
         }
         return false;
       }, (err) => { throw new Error(`Error finding user with discordId: ${user.DiscordId}, error: ${err}`); });
-    throw new Error(`Error finding user with discordId: ${user.DiscordId}`);
   }
 
   async add(user: IListEntry): Promise<void> {
@@ -56,10 +55,15 @@ export default class UserListService implements IUserListService {
   }
 
   async load(): Promise<IListEntry[]> {
-    await this.userRepository.findBy({ userStatus: this.userListType })
+    return await this.userRepository.findBy({ userStatus: this.userListType })
       .then((users) => {
-        return users;
+        if (users) {
+          return users.map((user) => {
+            return { DiscordId: user.DiscordId, Username: user.Username } as IListEntry;
+          });
+        } else {
+          throw new Error('No users found');
+        }
       }, (err) => { throw new Error(`Error loading whitelist: ${err}`); });
-    throw new Error('Error loading whitelist');
   }
 }

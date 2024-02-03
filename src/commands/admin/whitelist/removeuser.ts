@@ -10,7 +10,7 @@ import UserListType from '../../../models/UserListType';
 const fileSystemConfig: FileSystemServiceConfig = config.beeheimVanillaAdminListFileSystem;
 const userRepository = new UserRepository();
 const whitelistService = new UserListService(userRepository, new FileUploadService(fileSystemConfig),
- new UserListBuilder(userRepository), UserListType.WHITELIST);
+  new UserListBuilder(userRepository), UserListType.WHITELIST);
 
 module.exports = {
   data:

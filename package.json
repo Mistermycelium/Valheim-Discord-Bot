@@ -38,6 +38,7 @@
   "devDependencies": {
     "@stylistic/eslint-plugin-js": "^1.4.1",
     "@types/debug": "^4.1.12",
+    "@types/glob": "^8.1.0",
     "@types/jest": "^29.5.11",
     "@types/node": "^20.10.5",
     "@types/sequelize": "^4.28.20",

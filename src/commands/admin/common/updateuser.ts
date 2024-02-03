@@ -2,7 +2,7 @@ import { SlashCommandBuilder } from 'discord.js';
 import Validator from '../../../modules/utility/Validator';
 import UserService from '../../../services/UserService';
 import { UserRepository } from '../../../data/repositories/UserRepository';
-import { User } from '../../../data/models/User';
+import { UserInterface } from '../../../data/models/User';
 
 const userRepository = new UserRepository();
 const userService = new UserService(userRepository);
@@ -30,7 +30,7 @@ module.exports = {
           .setDescription('The users Xbox ID')),
   async execute(interaction: { options: { getMentionable: (arg0: string) => any; getString: (arg0: string) => any; }; reply: (arg0: { content: string; ephemeral: boolean; }) => any; }) {
     const mentionable = interaction.options.getMentionable('user');
-    const user: User = await userService.findBy(mentionable.user.id);
+    const user: UserInterface = await userService.findBy(mentionable.user.id);
 
     if (!await userService.findBy(user.DiscordId)) {
       throw new Error(`User ${user.Username} is not in the whitelist.`);

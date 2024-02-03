@@ -58,13 +58,13 @@ class User extends Model<UserInterface, UserInterface> implements UserInterface 
         modelName: 'User',
         validate: {
           eitherSteamIdOrXboxId() {
-            if (!this.steamId && !this.xboxId) {
-              throw new Error('Either steamId or xboxId must be set');
+            if (!this.SteamId && !this.XboxId) {
+              throw new Error('Either SteamId or XboxId must be set');
             }
           },
-          discodIdRequired() {
-            if (!this.discordId) {
-              throw new Error('DiscordID must be set');
+          discordIdRequired() {
+            if (!this.DiscordId) {
+              throw new Error('DiscordId must be set');
             }
           },
         },

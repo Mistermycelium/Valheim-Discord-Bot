@@ -31,15 +31,16 @@ class UserRepository implements IRepository<UserInterface> {
   }
 
   async findById(id: string): Promise<UserInterface> {
-    await User.findOne({ where: { DiscordId: id } })
+    return await User.findOne({ where: { DiscordId: id } })
       .then((user) => {
         if (user) {
           return user.dataValues as UserInterface;
+        } else {
+          throw new Error(`User ${id} not found`);
         }
       }, (err) => {
         throw err;
       });
-    throw new Error(`User ${id} not found`);
   }
 
   async getAll(): Promise<UserInterface[]> {
@@ -48,7 +49,7 @@ class UserRepository implements IRepository<UserInterface> {
   }
 
   async create(user: UserInterface): Promise<UserInterface> {
-    this.mutex.acquire().then(async () => {
+    return this.mutex.acquire().then(async () => {
       const existingUser = await User.findOne({
         where: {
           DiscordId: user.DiscordId,
@@ -69,7 +70,6 @@ class UserRepository implements IRepository<UserInterface> {
     }, (err: Error) => {
       throw new Error(`Error creating ${user.Username}:, DiscorId: ${user.DiscordId}, error: ${err}`);
     });
-    throw new Error(`Error creating ${user.Username}:, DiscorId: ${user.DiscordId}`);
   }
 
   async delete(user: User): Promise<void> {
@@ -93,7 +93,7 @@ class UserRepository implements IRepository<UserInterface> {
   }
 
   async update(user: User): Promise<UserInterface> {
-    this.mutex.acquire().then(async () => {
+    return this.mutex.acquire().then(async () => {
       await User.update(user, {
         where: {
           DiscordId: user.DiscordId,
@@ -110,7 +110,6 @@ class UserRepository implements IRepository<UserInterface> {
         }
       });
     });
-    throw new Error(`${JSON.stringify(user, null, 2)} not found`);
   }
 }
 
