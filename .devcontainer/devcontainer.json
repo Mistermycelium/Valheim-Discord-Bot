@@ -10,23 +10,22 @@
 	// "runArgs": ["--name", "ValheimDiscordBot"],
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
+
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [],
+
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// "postCreateCommand": "yarn install",
+
 	// Configure tool-specific properties.
 	"customizations": {
 		"vscode": {
-			"extensions": [
-				"phind.phind",
-				"GitHub.copilot",
-				"GitHub.copilot-chat",
-				"ms-azuretools.vscode-docker",
-				"hediet.vscode-drawio",
-				"TianyangGuan.codemap"
-			]
+				"extensions": [
+						"phind.phind"
+				]
 		}
-	}
+}
+
 	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
 	// "remoteUser": "root"
 }
