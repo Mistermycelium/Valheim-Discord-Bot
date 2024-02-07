@@ -1,0 +1,392 @@
+{
+  "vanillaAdminListFileSystem": {
+    "serviceType": "FS",
+    "configName": "adminlist", 
+    "hostInfo": {
+      "name": "beeheim"
+    },
+    "clientInfo": {
+      "user": "discordBot"
+    },
+    "path": "/home/beeheim/gameservers/valheim/vanilla/saves/adminlist.txt"
+  },
+  "vanillaAdminListRest": {
+    "serviceType": "REST",
+    "configName": "adminlist",
+    "hostInfo": {
+      "name": "beeheim",
+      "fqdn": "beeheim.buzz",
+      "port": 80,
+      "protocol": "https"
+    },
+    "clientInfo": {
+      "user": "discordBot"
+    },
+    "path": "/home/beeheim/gameservers/valheim/vanilla/saves/adminlist.txt"
+  },
+  "vanillaAdminListFtp": {
+    "serviceType": "FTP",
+    "configName": "adminlist", 
+    "hostInfo": {
+      "name": "beeheim",
+      "fqdn": "beeheim.buzz",
+      "port": 21,
+      "protocol": "ftp"
+    },
+    "clientInfo": {
+      "user": "discordBot"
+    },
+    "path": "/home/beeheim/gameservers/valheim/vanilla/saves/adminlist.txt"
+  },
+  "vanillaPermittedListFtp": {
+    "serviceType": "FTP",
+    "configName": "permittedlist", 
+    "hostInfo": {
+      "name": "beeheim",
+      "fqdn": "beeheim.buzz",
+      "port": 21,
+      "protocol": "ftp"
+    },
+    "clientInfo": {
+      "user": "discordBot"
+    },
+    "path": "/home/beeheim/gameservers/valheim/vanilla/saves/permittedlist.txt"
+  },
+  "vanillaPermittedListFileSystem": {
+    "serviceType": "FS",
+    "configName": "permittedlist", 
+    "hostInfo": {
+      "name": "beeheim"
+    },
+    "clientInfo": {
+      "user": "discordBot"
+    },
+    "path": "/home/beeheim/gameservers/valheim/vanilla/saves/permittedlist.txt"
+  },
+  "vanillaPermittedListRest": {
+    "serviceType": "REST",
+    "configName": "permittedlist",
+    "hostInfo": {
+      "name": "beeheim",
+      "fqdn": "beeheim.buzz",
+      "port": 80,
+      "protocol": "https"
+    },
+    "clientInfo": {
+      "user": "discordBot"
+    },
+    "path": "/home/beeheim/gameservers/valheim/vanilla/saves/permittedlist.txt"
+  },
+  "vanillaBanListFtp": {
+    "serviceType": "FTP",
+    "configName": "banlist", 
+    "hostInfo": {
+      "name": "beeheim",
+      "fqdn": "beeheim.buzz",
+      "port": 21,
+      "protocol": "ftp"
+    },
+    "clientInfo": {
+      "user": "discordBot"
+    },
+    "path": "/home/beeheim/gameservers/valheim/vanilla/saves/banlist.txt"
+  },
+  "vanillaBanListFileSystem": {
+    "serviceType": "FS",
+    "configName": "banlist", 
+    "hostInfo": {
+      "name": "beeheim"
+    },
+    "clientInfo": {
+      "user": "discordBot"
+    },
+    "path": "/home/beeheim/gameservers/valheim/vanilla/saves/banlist.txt"
+  },
+  "vanillaBanListRest": {
+    "serviceType": "REST",
+    "configName": "banlist",
+    "hostInfo": {
+      "name": "beeheim",
+      "fqdn": "beeheim.buzz",
+      "port": 80,
+      "protocol": "https"
+    },
+    "clientInfo": {
+      "user": "discordBot"
+    },
+    "path": "/home/beeheim/gameservers/valheim/vanilla/saves/banlist.txt"
+  },
+  "vanillaBlackListFtp": {
+    "serviceType": "FTP",
+    "configName": "blacklist", 
+    "hostInfo": {
+      "name": "beeheim",
+      "fqdn": "beeheim.buzz",
+      "port": 21,
+      "protocol": "ftp"
+    },
+    "clientInfo": {
+      "user": "discordBot"
+    },
+    "path": "/home/beeheim/gameservers/valheim/vanilla/saves/blacklist.txt"
+  },
+  "vanillaBlackListFileSystem": {
+    "serviceType": "FS",
+    "configName": "blacklist", 
+    "hostInfo": {
+      "name": "beeheim"
+    },
+    "clientInfo": {
+      "user": "discordBot"
+    },
+    "path": "/home/beeheim/gameservers/valheim/vanilla/saves/blacklist.txt"
+  },
+  "vanillaBlackListRest": {
+    "serviceType": "REST",
+    "configName": "blacklist",
+    "hostInfo": {
+      "name": "beeheim",
+      "fqdn": "beeheim.buzz",
+      "port": 80,
+      "protocol": "https"
+    },
+    "clientInfo": {
+      "user": "discordBot"
+    },
+    "path": "/home/beeheim/gameservers/valheim/vanilla/saves/blacklist.txt"
+  },
+  "vanillaWhiteListFtp": {
+    "serviceType": "FTP",
+    "configName": "whitelist", 
+    "hostInfo": {
+      "name": "beeheim",
+      "fqdn": "beeheim.buzz",
+      "port": 21,
+      "protocol": "ftp"
+    },
+    "clientInfo": {
+      "user": "discordBot"
+    },
+    "path": "/home/beeheim/gameservers/valheim/vanilla/saves/whitelist.txt"
+  },
+  "vanillaWhiteListFileSystem": {
+    "serviceType": "FS",
+    "configName": "whitelist", 
+    "hostInfo": {
+      "name": "beeheim"
+    },
+    "clientInfo": {
+      "user": "discordBot"
+    },
+    "path": "/home/beeheim/gameservers/valheim/vanilla/saves/whitelist.txt"
+  },
+  "vanillaWhiteListRest": {
+    "serviceType": "REST",
+    "configName": "whitelist",
+    "hostInfo": {
+      "name": "beeheim",
+      "fqdn": "beeheim.buzz",
+      "port": 80,
+      "protocol": "https"
+    },
+    "clientInfo": {
+      "user": "discordBot"
+    },
+    "path": "/home/beeheim/gameservers/valheim/vanilla/saves/whitelist.txt"
+  },
+  "vanillaPlusAdminListFileSystem": {
+    "serviceType": "FS",
+    "configName": "adminlist",
+    "hostInfo": {
+      "name": "beeheim"
+    },
+    "clientInfo": {
+      "user": "discordBot"
+    },
+    "path": "/home/beeheim/gameservers/valheim/vanilla-plus/saves/adminlist.txt"
+  },
+  "vanillaPlusAdminListRest": {
+    "serviceType": "REST",
+    "configName": "adminlist",
+    "hostInfo": {
+      "name": "beeheim",
+      "fqdn": "beeheim.buzz",
+      "port": 80,
+      "protocol": "https"
+    },
+    "clientInfo": {
+      "user": "discordBot"
+    },
+    "path": "/home/beeheim/gameservers/valheim/vanilla-plus/saves/adminlist.txt"
+  },
+  "vanillaPlusAdminListFtp": {
+    "serviceType": "FTP",
+    "configName": "adminlist",
+    "hostInfo": {
+      "name": "beeheim",
+      "fqdn": "beeheim.buzz",
+      "port": 21,
+      "protocol": "ftp"
+    },
+    "clientInfo": {
+      "user": "discordBot"
+    },
+    "path": "/home/beeheim/gameservers/valheim/vanilla-plus/saves/adminlist.txt"
+  },
+  "vanillaPlusPermittedListFtp": {
+    "serviceType": "FTP",
+    "configName": "permittedlist",
+    "hostInfo": {
+      "name": "beeheim",
+      "fqdn": "beeheim.buzz",
+      "port": 21,
+      "protocol": "ftp"
+    },
+    "clientInfo": {
+      "user": "discordBot"
+    },
+    "path": "/home/beeheim/gameservers/valheim/vanilla-plus/saves/permittedlist.txt"
+  },
+  "vanillaPlusPermittedListFileSystem": {
+    "serviceType": "FS",
+    "configName": "permittedlist",
+    "hostInfo": {
+      "name": "beeheim"
+    },
+    "clientInfo": {
+      "user": "discordBot"
+    },
+    "path": "/home/beeheim/gameservers/valheim/vanilla-plus/saves/permittedlist.txt"
+  },
+  "vanillaPlusPermittedListRest": {
+    "serviceType": "REST",
+    "configName": "permittedlist",
+    "hostInfo": {
+      "name": "beeheim",
+      "fqdn": "beeheim.buzz",
+      "port": 80,
+      "protocol": "https"
+    },
+    "clientInfo": {
+      "user": "discordBot"
+    },
+    "path": "/home/beeheim/gameservers/valheim/vanilla-plus/saves/permittedlist.txt"
+  },
+  "vanillaPlusBanListFtp": {
+    "serviceType": "FTP",
+    "configName": "banlist",
+    "hostInfo": {
+      "name": "beeheim",
+      "fqdn": "beeheim.buzz",
+      "port": 21,
+      "protocol": "ftp"
+    },
+    "clientInfo": {
+      "user": "discordBot"
+    },
+    "path": "/home/beeheim/gameservers/valheim/vanilla-plus/saves/banlist.txt"
+  },
+  "vanillaPlusBanListFileSystem": {
+    "serviceType": "FS",
+    "configName": "banlist",
+    "hostInfo": {
+      "name": "beeheim"
+    },
+    "clientInfo": {
+      "user": "discordBot"
+    },
+    "path": "/home/beeheim/gameservers/valheim/vanilla-plus/saves/banlist.txt"
+  },
+  "vanillaPlusBanListRest": {
+    "serviceType": "REST",
+    "configName": "banlist",
+    "hostInfo": {
+      "name": "beeheim",
+      "fqdn": "beeheim.buzz",
+      "port": 80,
+      "protocol": "https"
+    },
+    "clientInfo": {
+      "user": "discordBot"
+    },
+    "path": "/home/beeheim/gameservers/valheim/vanilla-plus/saves/banlist.txt"
+  },
+  "vanillaPlusBlackListFtp": {
+    "serviceType": "FTP",
+    "configName": "blacklist",
+    "hostInfo": {
+      "name": "beeheim",
+      "fqdn": "beeheim.buzz",
+      "port": 21,
+      "protocol": "ftp"
+    },
+    "clientInfo": {
+      "user": "discordBot"
+    },
+    "path": "/home/beeheim/gameservers/valheim/vanilla-plus/saves/blacklist.txt"
+  },
+  "vanillaPlusBlackListFileSystem": {
+    "serviceType": "FS",
+    "configName": "blacklist",
+    "hostInfo": {
+      "name": "beeheim"
+    },
+    "clientInfo": {
+      "user": "discordBot"
+    },
+    "path": "/home/beeheim/gameservers/valheim/vanilla-plus/saves/blacklist.txt"
+  },
+  "vanillaPlusBlackListRest": {
+    "serviceType": "REST",
+    "configName": "blacklist",
+    "hostInfo": {
+      "name": "beeheim",
+      "fqdn": "beeheim.buzz",
+      "port": 80,
+      "protocol": "https"
+    },
+    "clientInfo": {
+      "user": "discordBot"
+    },
+    "path": "/home/beeheim/gameservers/valheim/vanilla-plus/saves/blacklist.txt"
+  },
+  "vanillaPlusWhiteListFtp": {
+    "serviceType": "FTP",
+    "configName": "whitelist",
+    "hostInfo": {
+      "name": "beeheim",
+      "fqdn": "beeheim.buzz",
+      "port": 21,
+      "protocol": "ftp"
+    },
+    "clientInfo": {
+      "user": "discordBot"
+    },
+    "path": "/home/beeheim/gameservers/valheim/vanilla-plus/saves/whitelist.txt"
+  },
+  "vanillaPlusWhiteListFileSystem": {
+    "serviceType": "FS",
+    "configName": "whitelist",
+    "hostInfo": {
+      "name": "beeheim"
+    },
+    "clientInfo": {
+      "user": "discordBot"
+    },
+    "path": "/home/beeheim/gameservers/valheim/vanilla-plus/saves/whitelist.txt"
+  },
+  "vanillaPlusWhiteListRest": {
+    "serviceType": "REST",
+    "configName": "whitelist",
+    "hostInfo": {
+      "name": "beeheim",
+      "fqdn": "beeheim.buzz",
+      "port": 80,
+      "protocol": "https"
+    },
+    "clientInfo": {
+      "user": "discordBot"
+    },
+    "path": "/home/beeheim/gameservers/valheim/vanilla-plus/saves/whitelist.txt"
+  }  
+}  

@@ -1,0 +1,20 @@
+[
+  {
+    "Name": "All",
+    "GuildId": "1179902248227176458",
+    "Host": "beeheim.buzz",
+    "Port": "9999"
+  },
+  {
+    "Name": "Vanilla",
+    "GuildId": "1179902248227176458",
+    "Host": "beeheim.buzz",
+    "Port": "2401"
+  },
+  {
+    "Name": "Vanilla Plus",
+    "GuildId": "1179902248227176458",
+    "Host": "beeheim.buzz",
+    "Port": "2406"
+  }
+]
