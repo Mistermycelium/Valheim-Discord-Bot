@@ -1,8 +1,9 @@
 import { REST, Routes } from 'discord.js';
 import { clientId, guildId, token } from '../config/config.json';
-// guildID
+
 import fs from 'node:fs';
 import path from 'node:path';
+import glob from 'glob';
 
 const commands = [];
 // Grab all the command folders from the commands directory you created earlier
@@ -12,7 +13,8 @@ const commandFolders = fs.readdirSync(foldersPath);
 for (const folder of commandFolders) {
   // Grab all the command files from the commands directory you created earlier
   const commandsPath = path.join(foldersPath, folder);
-  const commandFiles = fs.readdirSync(commandsPath).filter(file => file.endsWith('.js'));
+  const commandFiles = glob.sync('**/*.js', { cwd: commandsPath });
+
   // Grab the SlashCommandBuilder#toJSON() output of each command's data for deployment
   for (const file of commandFiles) {
     const filePath = path.join(commandsPath, file);
