@@ -1,17 +1,6 @@
 import { SlashCommandBuilder } from 'discord.js';
-import UserService from '../../services/UserService';
-import { UserRepository } from '../../data/repositories/UserRepository';
-import { UserInterface } from '../../data/models/User';
-import { Interaction } from '../../interfaces/discord/Interaction';
-import { Replies } from '../../enums/discord/Replies';
-import { SubCommands } from '../../enums/discord/SubCommands';
+import { whitelist } from '../../modules/whitelist';
 
-
-const userRepository = new UserRepository();
-const userService = new UserService(userRepository);
-
-const xboxRegExp = /^Xbox_\d{16}$/;
-const steamRegExp = /^765\d{14}$/;
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -19,7 +8,7 @@ module.exports = {
     .setDescription('Sign up to join one of our servers!')
     .addSubcommand(subcommand =>
       subcommand
-        .setName(SubCommands.XBOX)
+        .setName('xbox')
         .setDescription('For Xbox players')
         .addStringOption(option =>
           option.setName('xboxid')
@@ -27,7 +16,7 @@ module.exports = {
             .setRequired(true)))
     .addSubcommand(subcommand =>
       subcommand
-        .setName(SubCommands.STEAM)
+        .setName('steam')
         .setDescription('For Steam players')
         .addStringOption(option =>
           option.setName('steam64id')
@@ -39,68 +28,38 @@ module.exports = {
  *
  * @param interaction - The interaction object from the Discord API.
  */
-  async execute(interaction: Interaction) {
+  async execute(interaction: { options: { getSubcommand: () => string; getString: (arg0: string) => any; }; user: { id: any; username: any; }; reply: (arg0: { content: string; ephemeral: boolean; }) => any; }) {
     // for xbox users
-    const subCommand = interaction.options.getSubcommand();
-
-    if (subCommand === SubCommands.XBOX) {
-      console.log('XBOX');
-      const xboxID = this.getInteractionOptionFrom('xboxid', interaction);
+    if (interaction.options.getSubcommand() === 'xbox') {
+      const xboxID = interaction.options.getString('xboxid');
+      const xboxRegExp = /^Xbox_\d{16}$/;
       if (xboxID && xboxRegExp.test(xboxID)) {
-        await this.checkIfUserIsRegistered(interaction, xboxID, this.registerXboxUser);
-        // await this.registerXboxUser(interaction, xboxID);
+        if (await whitelist.findUser(interaction.user.id)) {
+          await interaction.reply({ content: `It looks like you're already registered ${interaction.user.username}`, ephemeral: true });
+        } else {
+          await whitelist.addUser({ DiscordID: interaction.user.id, Username: interaction.user.username, XboxID: xboxID });
+          // call function to manage record, check for existing record. if (record.exists)
+          await interaction.reply({ content: `Thank you for registering with the XboxID ${xboxID}.`, ephemeral: true });
+        }
       } else {
-        await this.reply(interaction, `${xboxID} ${Replies.XBOX_ID_INVALID_OR_MISSING}`);
+        // xboxID is missing or invalid. For now, we treat both the same.
+        await interaction.reply({ content: `\`\`${xboxID}\`\` is not a valid Xbox ID, Xbox IDs should look like \`\`Xbox_25xxxxxxxxxxxxxx\`\``, ephemeral: true });
       }
-    }
-
-    if (subCommand === SubCommands.STEAM) {
-      console.log('STEAM');
-      const steam64ID = this.getInteractionOptionFrom('steam64id', interaction);
+      // for steam users
+    } else if (interaction.options.getSubcommand() === 'steam') {
+      const steam64ID = interaction.options.getString('steam64id');
+      const steamRegExp = /^765\d{14}$/;
       if (steam64ID && steamRegExp.test(steam64ID)) {
-        await this.checkIfUserIsRegistered(interaction, steam64ID, this.registerSteamUser);
-        // await this.registerSteamUser(interaction, steam64ID);
+        if (await whitelist.findUser(interaction.user.id)) {
+          await interaction.reply({ content: `It looks like you're already registered ${interaction.user.username}`, ephemeral: true });
+        } else {
+          await whitelist.addUser({ DiscordID: interaction.user.id, Username: interaction.user.username, SteamID: steam64ID });
+          await interaction.reply({ content: `Thank you for registering with the Steam ID ${steam64ID}`, ephemeral: true });
+        }
       } else {
-        this.reply(interaction, `${steam64ID} ${Replies.STEAM_ID_INVALID_OR_MISSING}`);
+        // invalid or missing steam id
+        await interaction.reply({ content: `${steam64ID} is not a valid Steam ID, steam IDs should look like 765xxxxxxxxxxxxxx`, ephemeral: true });
       }
-    }
-  },
-  getInteractionOptionFrom(key: string, interaction: Interaction): string {
-    return interaction.options.getString(key);
-  },
-  async reply(interaction: Interaction, message: string): Promise<void> {
-    await interaction.reply({ content: message, ephemeral: true });
-  },
-  async checkIfUserIsRegistered(interaction: Interaction, id: string,
-    callback: (action: Interaction, accountId: string) => Promise<void>) {
-    try {
-      const isRegistered = await userService.findBy(interaction.user.id);
-      if (isRegistered) {
-        this.reply(interaction, `${Replies.ALREADY_REGISTERED} ${interaction.user.username}`);
-      } else {
-        callback(interaction, id);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  },
-  async registerXboxUser(interaction: Interaction, xboxId: string): Promise<void> {
-    try {
-      const user = { DiscordId: interaction.user.id, Username: interaction.user.username, XboxId: xboxId } as UserInterface;
-      await userService.create(user);
-      await this.reply(interaction, `${Replies.XBOX_REGISTERED} ${xboxId}.`);
-    } catch (err) {
-      console.log(err);
-    }
-  },
-  async registerSteamUser(interaction: { options: { getSubcommand: () => string; getString: (arg0: string) => any; }; user: { id: any; username: any; }; reply: (arg0: { content: string; ephemeral: boolean; }) => any; }, steam64ID: string): Promise<void> {
-    try {
-      const user = { DiscordId: interaction.user.id, Username: interaction.user.username, SteamId: steam64ID } as UserInterface;
-      await userService.create(user);
-      // await this.reply(interaction, `${Replies.STEAM_REGISTERED} ${steam64ID}`);
-      await interaction.reply({ content: `Thank you for registering with the Steam ID ${steam64ID}`, ephemeral: true });
-    } catch (err) {
-      console.log(err);
     }
   },
 };
