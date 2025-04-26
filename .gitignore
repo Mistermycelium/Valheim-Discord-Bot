@@ -9,3 +9,4 @@ config/*
 !config/users.json
 dist/
 package-lock.json
+dbs/

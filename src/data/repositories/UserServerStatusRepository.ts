@@ -3,7 +3,7 @@ import { UserServerStatus, UserServerStatusInterface } from '../models/UserServe
 import { Mutex } from 'async-mutex';
 import { WhereOptions, ForeignKeyConstraintError, UniqueConstraintError } from 'sequelize';
 
-class UserServerStatusRepository implements IRepository<UserServerStatus> {
+class UserServerStatusRepository implements IRepository<UserServerStatus,Boolean> {
   mutex: any;
 
   constructor() {
@@ -49,22 +49,15 @@ class UserServerStatusRepository implements IRepository<UserServerStatus> {
 
   async create(userServerStatus: UserServerStatusInterface): Promise<UserServerStatus> {
     return this.mutex.acquire().then(async () => {
-      const existingUserServerStatus = await UserServerStatus.findOne({
+      const [existingUserServerStatus, created] = await UserServerStatus.findOrCreate({
         where: {
           Id: userServerStatus.Id,
         },
+        defaults: userServerStatus,
       });
       if (existingUserServerStatus) {
         this.releaseMutex();
         return existingUserServerStatus.update(userServerStatus);
-      } else {
-        await UserServerStatus.create(userServerStatus)
-          .then((created) => {
-            this.releaseMutex();
-            return created;
-          }, (err) => {
-            throw new Error(`Error creating ${userServerStatus.StatusType}:, On server: ${userServerStatus.Id}, error: ${err}`);
-          });
       }
     }, (err: Error) => {
       throw new Error(`Error creating ${userServerStatus.StatusType}:, On server: ${userServerStatus.Id}, error: ${err}`);

@@ -1,4 +1,4 @@
-import { Dialect, Sequelize } from 'sequelize';
+import { Sequelize } from 'sequelize';
 import { User, UserInterface } from './models/User';
 
 
@@ -6,11 +6,9 @@ import dbConfig from '../../config/dbConfig.json';
 import { Server } from './models/Server';
 import { UserServerStatus } from './models/UserServerStatus';
 
-const dbContext = new Sequelize(dbConfig.database, dbConfig.username, dbConfig.password!, {
-  host: dbConfig.host,
-  port: 2561,
-  dialect: dbConfig.dialect as Dialect,
-  logging: console.log,
+const dbContext = new Sequelize({
+  dialect: "sqlite",
+  storage: "dbs/database.db",
 });
 
 User.initModel(dbContext);

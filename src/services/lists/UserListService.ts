@@ -13,9 +13,9 @@ import { UserServerStatusInterface } from '../../data/models/UserServerStatus';
 export default class UserListService implements IUserListService {
   eventEmitter: EventEmitter;
 
-  constructor(private userRepository: IRepository<UserInterface>,
-    private serverRepository: IRepository<ServerInterface>,
-    private userServiceStatusRepository: IRepository<UserServerStatusInterface>,
+  constructor(private userRepository: IRepository<UserInterface,Boolean>,
+    private serverRepository: IRepository<ServerInterface,Boolean>,
+    private userServiceStatusRepository: IRepository<UserServerStatusInterface,Boolean>,
     private uploadService: TransportMethod<AbstractConfig>,
     private listBuilder: UserListBuilder,
     private userListType: UserListType) {

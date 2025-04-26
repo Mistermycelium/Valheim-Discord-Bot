@@ -6,11 +6,11 @@ import { UserInterface } from '../data/models/User';
 // import { injectable } from 'inversify';
 
 // @injectable()
-export default class UserService implements IService<UserInterface> {
+export default class UserService implements IService<UserInterface,Boolean> {
   private eventEmitter: EventEmitter;
 
   constructor(
-    private userRepository: IRepository<UserInterface>) {
+    private userRepository: IRepository<UserInterface,Boolean>) {
     this.userRepository = userRepository;
     this.eventEmitter = new EventEmitter();
   }
@@ -29,16 +29,16 @@ export default class UserService implements IService<UserInterface> {
       });
   }
 
-  async create(user: UserInterface): Promise<UserInterface> {
+  async create(user: UserInterface): Promise<UserInterface|Boolean> {
     return await this.userRepository
       .create(user)
-      .then((created) => {
-        if (created) {
-          console.log(`${created.Username}, DiscorId: ${user.DiscordId} was created successfully`);
-          this.eventEmitter.emit('user.created', created);
-          return created;
+      .then((result) => {
+        if (result) {
+          console.log(`${user.Username}, DiscordId: ${user.DiscordId} was created successfully`);
+          this.eventEmitter.emit('user.created', result);
+          return result;
         } else {
-          throw new Error(`Error creating ${user.Username}:, DiscorId: ${user.DiscordId}`);
+          return false;
         }
       }, (err) => {
         throw new Error(`Error creating ${user.Username}:, DiscorId: ${user.DiscordId}, error: ${err}`);
