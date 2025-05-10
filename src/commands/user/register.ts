@@ -48,7 +48,6 @@ module.exports = {
     if (subCommand === SubCommands.XBOX) {
       console.log('XBOX');
       if (xboxId && xboxRegExp.test(xboxId)) {
-        await this.checkIfUserIsRegistered(interaction, xboxId);
         await this.registerXboxUser(interaction, xboxId);
       } else {
         await this.reply(interaction, `${xboxId} ${Replies.XBOX_ID_INVALID_OR_MISSING}`);
@@ -58,7 +57,6 @@ module.exports = {
     if (subCommand === SubCommands.STEAM) {
       console.log('STEAM');
       if (steam64Id && steamRegExp.test(steam64Id)) {
-        await this.checkIfUserIsRegistered(interaction, steam64Id);
         await this.registerSteamUser(interaction, steam64Id);
       } else {
         this.reply(interaction, `${steam64Id} ${Replies.STEAM_ID_INVALID_OR_MISSING}`);
@@ -71,32 +69,51 @@ module.exports = {
   async reply(interaction: Interaction, message: string): Promise<void> {
     await interaction.reply({ content: message, ephemeral: true });
   },
-  async checkIfUserIsRegistered(interaction: Interaction, id: string) {
-    try {
-      const discordId = interaction.user.id;
-      const discordUsername = interaction.user.username;
-      const isRegistered = await userService.findBy(discordId);
-      if (isRegistered) {
-        console.log(`Hi ${discordUsername}! discordId: ${discordId}. ${Replies.ALREADY_REGISTERED} with ${id}.`);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  },
+  // TODO add a return Promise<boolean> to this function so that we avoid executing line 62
+//  async checkIfUserIsRegistered(interaction: Interaction, id: string) {
+//    try {
+//      const discordId = interaction.user.id;
+//      const discordUsername = interaction.user.username;
+//      const isRegistered = await userService.findBy(discordId);
+//      if (isRegistered) {
+//        console.log(`Hi ${discordUsername}! discordId: ${discordId}. ${Replies.ALREADY_REGISTERED} with ${id}.`);
+//      }
+//    } catch (err) {
+//      console.log(err);
+//    }
+//  },
   async registerXboxUser(interaction: Interaction, xboxId: string): Promise<void> {
     try {
       const user = { DiscordId: interaction.user.id, Username: interaction.user.username, XboxId: xboxId } as UserInterface;
-      await userService.create(user);
-      await this.reply(interaction, `${Replies.XBOX_REGISTERED} ${xboxId}.`);
+      let reply='Error: Reply Unknown';
+      await userService.create(user)
+      .then(created => {
+        if (created) {
+          // TODO: Define Reply based on if user was created or not
+          reply = `${Replies.XBOX_REGISTERED} ${xboxId}.`;
+        } else {
+          reply = `${Replies.XBOX_UPDATED} ${xboxId}.`;
+        }
+      });
+      await this.reply(interaction, reply);
     } catch (err) {
       console.log(err);
     }
   },
   async registerSteamUser(interaction: Interaction, steam64ID: string): Promise<void> {
     try {
+      let reply='Error: Reply Unknown';
       const user = { DiscordId: interaction.user.id, Username: interaction.user.username, SteamId: steam64ID } as UserInterface;
-      await userService.create(user);
-      await this.reply(interaction, `${Replies.STEAM_REGISTERED} ${steam64ID}`);
+      await userService.create(user)
+      .then(created => {
+        if (created) {
+          // TODO: Define Reply based on if user was created or not
+          reply = `${Replies.STEAM_REGISTERED} ${steam64ID}.`;
+        } else {
+          reply = `${Replies.STEAM_UPDATED} ${steam64ID}.`;
+        }
+      });
+      await this.reply(interaction, reply);
     } catch (err) {
       console.log(err);
     }

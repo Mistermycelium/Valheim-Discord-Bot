@@ -3,7 +3,7 @@ import { UniqueConstraintError, ForeignKeyConstraintError, WhereOptions } from '
 import IRepository from './IRepository';
 import { Mutex } from 'async-mutex';
 
-class UserRepository implements IRepository<User> {
+class UserRepository implements IRepository<User,Boolean> {
   mutex: any;
 
   constructor() {
@@ -26,7 +26,7 @@ class UserRepository implements IRepository<User> {
     })
       .then(users => users.map(user => user.dataValues as User))
       .catch(err => {
-        throw new Error(`Error executing query: ${query}, error: ${err}`);
+        throw new Error(`Error executing query: ${JSON.stringify(query)}, error: ${err}`);
       });
   }
 
@@ -47,28 +47,19 @@ class UserRepository implements IRepository<User> {
     return await User.findAll();
   }
 
-  async create(user: UserInterface): Promise<User> {
-    return this.mutex.acquire().then(async () => {
-      const existingUser = await User.findOne({
+  async create(user: UserInterface): Promise<User | Boolean> {
+      const [existingUser, created] = await User.findOrCreate({
         where: {
           DiscordId: user.DiscordId,
         },
+        defaults: user,
       });
-      if (existingUser) {
-        this.releaseMutex();
-        return existingUser.update(user);
+      if (!created) {
+        existingUser.update(user);
+        return created; // existingUser.update(user);
       } else {
-        await User.create(user)
-          .then((created) => {
-            this.releaseMutex();
-            return created;
-          }, (err) => {
-            throw new Error(`Error creating ${user.Username}:, DiscorId: ${user.DiscordId}, error: ${err}`);
-          });
+        return existingUser; // existingUser;
       }
-    }, (err: Error) => {
-      throw new Error(`Error creating ${user.Username}:, DiscorId: ${user.DiscordId}, error: ${err}`);
-    });
   }
 
   async delete(query: WhereOptions): Promise<void> {

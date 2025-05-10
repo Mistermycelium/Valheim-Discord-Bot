@@ -3,7 +3,7 @@ import { Server, UserServerStatus } from '../Database';
 import { ServerInterface } from '../models/Server';
 import { ForeignKeyConstraintError, UniqueConstraintError, WhereOptions } from 'sequelize';
 import { Mutex } from 'async-mutex';
-class ServerRepository implements IRepository<ServerInterface> {
+class ServerRepository implements IRepository<ServerInterface, Boolean> {
   mutex: any;
 
   constructor() {

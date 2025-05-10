@@ -10,30 +10,35 @@ import { Interaction } from '../../../interfaces/discord/Interaction';
 import { ServerRepository } from '../../../data/repositories/ServerRepository';
 import { UserServerStatusRepository } from '../../../data/repositories/UserServerStatusRepository';
 
-const fileSystemConfig: FileSystemServiceConfig = uploadConfig.vanillaBlackListFileSystem;
+const fileSystemConfig: FileSystemServiceConfig = uploadConfig.vanillaAdminListFileSystem;
 const userRepository = new UserRepository();
 const serverRepository = new ServerRepository();
 const userStatusRepository = new UserServerStatusRepository();
-const blacklistService = new UserListService(userRepository, serverRepository, userStatusRepository, new FileUploadService(fileSystemConfig),
-  new UserListBuilder(userRepository), UserListType.BLACKLIST);
+const adminlistService = new UserListService(userRepository, serverRepository, userStatusRepository, new FileUploadService(fileSystemConfig),
+  new UserListBuilder(userRepository), UserListType.ADMINLIST);
 
 module.exports = {
   data:
     new SlashCommandBuilder()
-      .setName('exonerateuser')
+      .setName('demotefromadmin')
       .setDefaultMemberPermissions(0)
-      .setDescription('Removes a user from the blacklist')
+      .setDescription('Removes a user from the adminlist')
       .addMentionableOption(option =>
         option.setName('user')
           .setRequired(true)
-          .setDescription('The User to remove from the blacklist')),
+          .setDescription('The User to remove from the adminlist')),
   async execute(interaction: Interaction) {
-    const user = interaction.options.getMentionable('user');
-    if (await blacklistService.exists(user)) {
-      blacklistService.remove(user);
-      await interaction.reply({ content: `${user} removed.`, ephemeral: true });
+    const mentionable = interaction.options.getMentionable('user');
+    const userId = mentionable.user.id;
+    const userName = mentionable.user.name;
+    const user = { Username: userName, DiscordId: userId };
+    console.log(`${mentionable.user.id}`);
+    await interaction.reply({ content: `Mentionable: ${mentionable}, ${mentionable.user.id}`, ephemeral: false });
+    if (await adminlistService.exists(user)) {
+      adminlistService.remove(userId);
+      await interaction.reply({ content: `${userName} removed.`, ephemeral: true });
     } else {
-      await interaction.reply({ content: `Failed: ${user}`, ephemeral: true });
+      await interaction.reply({ content: `Failed: ${userName}`, ephemeral: true });
     }
   },
 };
